@@ -3,6 +3,7 @@ import NavigationItems from './components/Navigation/NavigationItems/NavigationI
 import Login from './components/Login/Login';
 import AdminPage from './containers/AdminPage';
 import './App.css';
+import Auth from './containers/Auth/Auth';
 
 class App extends Component {
 
@@ -28,10 +29,9 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <NavigationItems/>
-                {this.state.loginStatus ? <AdminPage /> : 
-                    <Login loginSubmitHandler={this.loginSubmit}
-                            userOnChange={this.userChangeHandler}/>}
+                
+                <Auth/>
+                
             </div>
         );
     }
