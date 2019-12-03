@@ -10,6 +10,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import './Auth.css';
 import * as actions from '../../store/actions/index';
 
+import { withRouter } from 'react-router';
+
 class Auth extends Component {
     state = {
         controls: {
@@ -97,7 +99,8 @@ class Auth extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
+        //this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);*/
+        this.props.history.push('/dashboard');
     }
 
     switchAuthModeHandler = () => {
@@ -116,13 +119,6 @@ class Auth extends Component {
         }
 
         let form = formElementsArray.map(formElement => (
-            console.log("key: " + formElement.id),
-            console.log("elementType: " + formElement.config.elementType),
-            console.log("elementConfig: " + formElement.config.elementConfig),
-            console.log("value: " + formElement.config.value),
-            console.log("invalid: " + !formElement.config.valid),
-            console.log("shouldValidate: " + formElement.config.validation),
-            console.log("touched: " + formElement.config.touched),
             <Input
                 key={formElement.id}
                 elementType={formElement.config.elementType}
@@ -158,7 +154,7 @@ class Auth extends Component {
                 <form onSubmit={this.submitHandler}>
                     <FormHeader label="Please sign in."/>
                     {form}
-                    <Button>SUBMIT</Button>
+                    <Button className='submit'>SUBMIT</Button>
                     <Anchor link="#" anchorText="Forgot your username or password?"/>
                     <Anchor link="#" anchorText="Register Now"/>
                 </form>
@@ -184,4 +180,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));

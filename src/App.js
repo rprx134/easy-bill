@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import NavigationItems from './components/Navigation/NavigationItems/NavigationItems';
-import Login from './components/Login/Login';
-import AdminPage from './containers/AdminPage';
 import './App.css';
 import Auth from './containers/Auth/Auth';
-import Spinner from './components/UI/Spinner/Spinner';
+import { Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import Dashboard from './components/Dashboard/Dashboard';
 
 class App extends Component {
 
@@ -24,16 +23,18 @@ class App extends Component {
     }
 
     userChangeHandler = (event) => {
-        this.setState({user: event.target.value});
+        this.setState({ user: event.target.value });
     }
 
     render() {
         return (
-            <div className="App">
-                <Auth/>
-            </div>
+            <BrowserRouter>
+                <div className="App">
+                    <Route path="/login" exact component={Auth} />
+                    <Route path="/dashboard" exact component={Dashboard} />
+                </div>
+            </BrowserRouter>
         );
     }
-
 }
 export default App;
