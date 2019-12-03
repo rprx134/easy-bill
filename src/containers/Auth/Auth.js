@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
+import FormHeader from '../../components/UI/Headers/FormHeader/FormHeader';
+import Anchor from '../../components/UI/Anchor/Anchor';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import classes from './Auth.css';
+import './Auth.css';
 import * as actions from '../../store/actions/index';
 
 class Auth extends Component {
@@ -150,12 +152,15 @@ class Auth extends Component {
         }
 
         return (
-            <div className={classes.Auth}>
+            <div className="Auth">
                 {authRedirect}
                 {errorMessage}
                 <form onSubmit={this.submitHandler}>
+                    <FormHeader label="Please sign in."/>
                     {form}
                     <Button>SUBMIT</Button>
+                    <Anchor link="#" anchorText="Forgot your username or password?"/>
+                    <Anchor link="#" anchorText="Register Now"/>
                 </form>
             </div>
         );

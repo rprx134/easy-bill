@@ -1,5 +1,5 @@
 .Button {
-    background-color: #3396E5;
+    background-color: #4285D3;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -7,10 +7,13 @@
     cursor: pointer;
     border-radius: 4px;
     width: 100%;
+    line-height: 28px;
+    font-size: 16px;
+    background-image: linear-gradient(to bottom,#5595D9 0%, #4285D3 100%);
 }
 
 .Button:hover {
-    background-color: #409EE9;
+    background-color: #5595D9;
 }
 
 .Button:disabled {

@@ -4,6 +4,7 @@ import Login from './components/Login/Login';
 import AdminPage from './containers/AdminPage';
 import './App.css';
 import Auth from './containers/Auth/Auth';
+import Spinner from './components/UI/Spinner/Spinner';
 
 class App extends Component {
 
@@ -29,9 +30,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                
                 <Auth/>
-                
             </div>
         );
     }
