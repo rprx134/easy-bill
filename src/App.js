@@ -4,26 +4,17 @@ import Auth from './containers/Auth/Auth';
 import { Route } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
 import Dashboard from './components/Dashboard/Dashboard';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
 
-    state = {
-        loginStatus: false,
-        user: null,
-        password: null
-    }
+    state= {
 
+    }
+    
     componentDidMount = () => {
         document.title = "Easy Bill";
         document.bgColor = "#FBFBFD";
-    }
-
-    loginSubmit = () => {
-        this.setState({ loginStatus: true });
-    }
-
-    userChangeHandler = (event) => {
-        this.setState({ user: event.target.value });
     }
 
     render() {
@@ -32,6 +23,7 @@ class App extends Component {
                 <div className="App">
                     <Route path="/login" exact component={Auth} />
                     <Route path="/dashboard" exact component={Dashboard} />
+                    <Route path="/dashboard/products" exact component={Dashboard} />
                 </div>
             </BrowserRouter>
         );

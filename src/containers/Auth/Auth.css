@@ -1,12 +1,5 @@
-.Auth {
-    width: 30%;
-    margin: 90px 150px;
-    padding: 25px;
-    display: block;
-}
-
-@media (min-width: 600px) {
-    .Auth {
-        width: 500px;
-    }
+.btn-link{
+    padding-left: 0px!important;
+    display: block!important;
+    margin: 0!important;
 }

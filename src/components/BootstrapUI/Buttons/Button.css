@@ -1,0 +1,32 @@
+
+
+.btn-primary {
+    background-color: #4285D3!important;
+}
+
+.btn-primary:hover {
+    background-color: #5595D9!important;
+}
+
+.btn-primary:disabled {
+    color: #ccc!important;
+    cursor: not-allowed!important;
+}
+
+.btn-secondary {
+    background-color: rgb(138, 139, 139)!important;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(156, 154, 154)!important;
+}
+
+.btn{
+    margin-right:5px;
+    padding: 7px 15px!important;
+    border: none!important;
+    margin-bottom: 0.4cm;
+}
+.btn:last-child{
+    margin-right:0px;
+}

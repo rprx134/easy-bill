@@ -1,8 +1,7 @@
 import React from 'react';
-
 import './Input.css';
 
-const input = ( props ) => {
+const Input = (props) => {
     let inputElement = null;
     const inputClasses = ["InputElement"];
 
@@ -10,34 +9,27 @@ const input = ( props ) => {
         inputClasses.push("Invalid");
     }
 
-    switch ( props.elementType ) {
-        case ( 'input' ):
+    switch (props.inputType) {
+        case 'textBox':
             inputElement = <input
                 className={inputClasses.join(' ')}
                 {...props.elementConfig}
                 value={props.value}
                 onChange={props.changed} />;
             break;
-        case ( 'textarea' ):
-            inputElement = <textarea
-                className={inputClasses.join(' ')}
-                {...props.elementConfig}
-                value={props.value}
-                onChange={props.changed} />;
+        case 'textArea':
+            inputElement = <textarea className="form-control InputElement" rows="5" {...props.elementConfig} value={props.value} onChange={props.changed}></textarea>
             break;
-        case ( 'select' ):
-            inputElement = (
-                <select
-                    className={inputClasses.join(' ')}
-                    value={props.value}
-                    onChange={props.changed}>
-                    {props.elementConfig.options.map(option => (
+        case 'select':
+            inputElement = <select className="form-control InputElement" id={props.id} value={props.value} onChange={props.changed}>
+                {
+                    props.elementConfig.options.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.displayValue}
                         </option>
-                    ))}
-                </select>
-            );
+                    ))
+                }
+            </select>
             break;
         default:
             inputElement = <input
@@ -45,14 +37,14 @@ const input = ( props ) => {
                 {...props.elementConfig}
                 value={props.value}
                 onChange={props.changed} />;
-    }
+            break;
 
+    }
     return (
         <div className={"Input"}>
             {inputElement}
         </div>
     );
+}
 
-};
-
-export default input;
+export default Input;

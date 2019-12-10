@@ -1,0 +1,38 @@
+.InputElement {
+    width: 100%;
+    padding: 7px;
+    margin: 20px 0;
+    display: block;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.InputElement:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    border-top-color: rgb(128, 189, 255);
+    border-right-color: rgb(128, 189, 255);
+    border-bottom-color: rgb(128, 189, 255);
+    border-left-color: rgb(128, 189, 255);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.Invalid:focus {
+    border: 1px solid #9E1A1A;
+    color: #9E1A1A;
+    box-shadow: 0 0 0 0.2rem rgba(204, 114, 114, 0.514);
+}
+
+.Invalid{
+    border: 1px solid #9E1A1A;
+    color: #9E1A1A;
+}
+
+.form-control{
+    font-size: 14px!important;
+}
