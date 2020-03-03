@@ -1,36 +1,36 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import thunk from 'redux-thunk';
+import { createStore, compose, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import { render } from 'react-dom';
+import reducers from './redux/reducers/reducers';
+import rootSaga from './redux/sagas/rootSaga';
+
 
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import burgerBuilderReducer from './store/reducers/burgerBuilder';
-import orderReducer from './store/reducers/order';
-import authReducer from './store/reducers/auth';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const rootReducer = combineReducers({
-    burgerBuilder: burgerBuilderReducer,
-    order: orderReducer,
-    auth: authReducer
-});
+const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, composeEnhancers(
-    applyMiddleware(thunk)
-));
+/** Create middlewares for redux */
+let middlewares = applyMiddleware(sagaMiddleware);
 
-const app = (
+/** Create redux store */
+const store = createStore(
+    reducers,
+    compose(middlewares,
+        window.devToolsExtension ? window.devToolsExtension() : f => f),
+);
+
+sagaMiddleware.run(rootSaga);
+
+render(
     <Provider store={store}>
         <BrowserRouter>
             <App />
         </BrowserRouter>
-    </Provider>
+    </Provider>,
+    document.getElementById('root'),
 );
-
-ReactDOM.render( app, document.getElementById( 'root' ) );
-registerServiceWorker();

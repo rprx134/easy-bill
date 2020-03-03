@@ -19,6 +19,12 @@ export const InputValidation = (value, rules) => {
             isValid = value.length <= rules.maxLength && isValid
         }
 
+        if (rules.isPhone) {
+            isValid = value.length === 10 && isValid;
+            const pattern = /^\d+$/;
+            isValid = pattern.test(value) && isValid
+        }
+
         if (rules.isEmail) {
             const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
             isValid = pattern.test(value) && isValid

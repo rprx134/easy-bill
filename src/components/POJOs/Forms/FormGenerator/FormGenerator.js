@@ -6,7 +6,7 @@ export const getFormElements = (obj) => {
     for (let key in obj.state.controls) {
         formElementsArray.push({
             id: key,
-            config: obj.state.controls[key]
+            config: obj.state.controls[key],
         });
     }
     return formElementsArray;

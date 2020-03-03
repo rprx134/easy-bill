@@ -14,7 +14,7 @@ class App extends Component {
     
     componentDidMount = () => {
         document.title = "Easy Bill";
-        document.bgColor = "#FBFBFD";
+        document.body.style.backgroundColor = '#F0F0F0'
     }
 
     render() {
@@ -22,8 +22,7 @@ class App extends Component {
             <BrowserRouter>
                 <div className="App">
                     <Route path="/login" exact component={Auth} />
-                    <Route path="/dashboard" exact component={Dashboard} />
-                    <Route path="/dashboard/products" exact component={Dashboard} />
+                    <Route path="/dashboard" exact component={Dashboard}/>
                 </div>
             </BrowserRouter>
         );

@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import Aux from '../../../../hoc/Aux/Aux';
-import Button from '../../../../components/BootstrapUI/Buttons/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Button from '../../../../components/UI/BootstrapUI/Buttons/Button';
 import { InputValidation } from '../../../../components/POJOs/Forms/FormGenerator/FormValidation/InputValidation';
 import { formGenerator } from '../../../../components/POJOs/Forms/FormGenerator/FormGenerator';
 
 import '../../../../components/POJOs/Forms/Forms.css';
+import './AddProduct.css';
 
 class AddProduct extends Component {
     state = {
@@ -105,17 +103,16 @@ class AddProduct extends Component {
 
 
     render() {
-        console.log("hi");
         return (
             <Aux>
-                
-                            <form onSubmit={this.submitHandler}>
-                                <h4>Add Product</h4>
-                                {formGenerator(this)}
-                                <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
-                                <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" />
-                            </form>
-                       
+                <div className="AddProduct">
+                        <form onSubmit={this.submitHandler}>
+                            <h4>Add Product</h4>
+                            {formGenerator(this)}
+                            <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
+                            <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" />
+                        </form>
+                </div>
             </Aux>
         );
     }

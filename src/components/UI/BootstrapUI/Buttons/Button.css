@@ -2,6 +2,7 @@
 
 .btn-primary {
     background-color: #4285D3!important;
+    border: none!important;
 }
 
 .btn-primary:hover {
@@ -15,6 +16,7 @@
 
 .btn-secondary {
     background-color: rgb(138, 139, 139)!important;
+    border: none!important;
 }
 
 .btn-secondary:hover {
@@ -24,7 +26,7 @@
 .btn{
     margin-right:5px;
     padding: 7px 15px!important;
-    border: none!important;
+    
     margin-bottom: 0.4cm;
 }
 .btn:last-child{

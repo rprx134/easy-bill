@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import Button from '../../components/BootstrapUI/Buttons/Button';
+import Button from '../../components/UI/BootstrapUI/Buttons/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { InputValidation } from '../../components/POJOs/Forms/FormGenerator/FormValidation/InputValidation';
-import Anchor from '../../components/BootstrapUI/Anchor/Anchor';
+import Anchor from '../../components/UI/BootstrapUI/Anchor/Anchor';
 import { formGenerator,getFormElements } from '../../components/POJOs/Forms/FormGenerator/FormGenerator';
 import Aux from '../../hoc/Aux/Aux';
 import Alert from '../../components/UI/Modal/Alert/Alert';
@@ -80,8 +80,7 @@ class Auth extends Component {
     }
 
     resetFormValidity = () => {
-        this.setState({formValidity: true});
-        
+        this.setState({formValidity: true});   
     }
 
     render() {
