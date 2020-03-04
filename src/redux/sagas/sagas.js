@@ -1,5 +1,5 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { customersFetched } from '../actionTypes/actionTypes';
+import { customersFetched, addCustomerSuccess } from '../actionTypes/actionTypes';
 import { getAllCustomers, addCustomer } from '../../api/CustomersAPI';
 
 
@@ -13,7 +13,13 @@ function* getCustomersSaga() {
 }
 
 function* addCustomersSaga(action) {
-    yield call(addCustomer(action.payload));
+    try {
+        let { data } = yield call(addCustomer, action.payload);
+        yield put(addCustomerSuccess(data));
+        action.history.push('/dashboard/customers/');
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 export function* watchGetCustomers() {

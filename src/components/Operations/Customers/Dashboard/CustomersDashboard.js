@@ -14,7 +14,6 @@ const CustomersDashboard = (props) => {
     }
     return (
         <div className="CustomersDashboard">
-            <BrowserRouter>
                 <Row>
                     <Button btnVarient="outline-dark ml-auto mr-3" btnSize="sm" block={false} btnType="button" btnID="addNewCustomer" btnOnClick={addNewHandler} btnTxt="Add Customer" />
                 </Row>
@@ -32,7 +31,6 @@ const CustomersDashboard = (props) => {
                         />
                     </Switch>
                 </Row>
-            </BrowserRouter>
         </div>
     );
 }

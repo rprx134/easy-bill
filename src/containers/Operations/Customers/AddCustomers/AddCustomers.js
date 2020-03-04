@@ -238,8 +238,7 @@ class AddProduct extends Component {
             }
         });
         if (isFormValid) {
-            this.props.addCustomer(payload);
-            this.props.history.push('/dashboard');
+            this.props.addCustomer(payload, this.props.history);
         } else {
             this.setState({ formValidity: isFormValid });
         }

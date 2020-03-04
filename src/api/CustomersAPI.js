@@ -8,11 +8,9 @@ export const getAllCustomers = () => {
 }
 
 export const addCustomer = (payload) => {
-    return axios.post('http://localhost:4000/customers/AddCustomer', payload)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    return axios.request({
+        method: 'post',
+        url: 'http://localhost:4000/customers/AddCustomer',
+        data: payload
+      });
 }

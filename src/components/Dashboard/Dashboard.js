@@ -82,7 +82,7 @@ class Navigation extends Component {
 }
 
 const mapStateToProps = state => ({
-    
+    customers: state.customers,
 });
 
 const mapDispatchToProps = (dispatch) => {
