@@ -24,7 +24,7 @@ class AddProduct extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true,
+                    required: false,
                     isEmail: false,
                 },
                 valid: false,
@@ -70,9 +70,9 @@ class AddProduct extends Component {
                 },
                 value: '',
                 validation: {
-                    required: true,
+                    required: false,
                 },
-                valid: false,
+                valid: true,
                 touched: false
             },
             doorno: {
@@ -152,11 +152,11 @@ class AddProduct extends Component {
                     placeholder: 'Country',
                     id: "country"
                 },
-                value: '',
+                value: 'India',
                 validation: {
                     required: true,
                 },
-                valid: false,
+                valid: true,
                 touched: false
             },
             pincode: {
@@ -194,6 +194,7 @@ class AddProduct extends Component {
         event.preventDefault();
         let isFormValid = this.state.formValidity;
         let payload = {};
+        let id;
         getFormElements(this).forEach(formElement => {
             if (isFormValid) {
                 isFormValid = formElement.config.valid;
@@ -204,6 +205,7 @@ class AddProduct extends Component {
                     break;
                 case 'mobile':
                     payload = { ...payload, "mobile": formElement.config.value };
+                    id = formElement.config.value;
                     break;
                 case 'email':
                     payload = { ...payload, "email": formElement.config.value };
@@ -237,6 +239,7 @@ class AddProduct extends Component {
                     break;
             }
         });
+        payload = { ...payload, "id": id };
         if (isFormValid) {
             this.props.addCustomer(payload, this.props.history);
         } else {
@@ -248,6 +251,9 @@ class AddProduct extends Component {
         this.setState({ formValidity: true });
     }
 
+    cancelHandler = () => {
+        this.props.history.push('/dashboard/customers/');
+    }
     render() {
         return (
             <Aux>
@@ -256,7 +262,7 @@ class AddProduct extends Component {
                         <h4>Add Customer</h4>
                         {formGenerator(this)}
                         <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
-                        <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" />
+                        <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" btnOnClick={this.cancelHandler} />
                         {this.state.formValidity ? null : <Alert show={!this.state.formValidity} resetFormValidity={this.resetFormValidity} alertMsg="Please fill the required fields with valid content" />}
                     </form>
                 </div>

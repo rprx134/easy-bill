@@ -1,7 +1,6 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Button from '../../../UI/BootstrapUI/Buttons/Button';
-import { BrowserRouter } from 'react-router-dom';
 import Products from '../../../../containers/Operations/Products/Products';
 import AddProduct from '../../../../containers/Operations/Products/AddProduct/AddProduct';
 import { Switch, Route, } from 'react-router-dom';
@@ -14,7 +13,6 @@ const productsDashboard = (props) => {
     }
     return (
         <div className="ProductsDashboard">
-            <BrowserRouter>
                 <Row>
                     <Button btnVarient="outline-dark ml-auto mr-3" btnSize="sm" block={false} btnType="button" btnID="addNewProduct" btnOnClick={addNewHandler} btnTxt="Add Prodcut" />
                 </Row>
@@ -32,7 +30,6 @@ const productsDashboard = (props) => {
                         />
                     </Switch>
                 </Row>
-            </BrowserRouter>
         </div>
     );
 }

@@ -6,6 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 import { render } from 'react-dom';
 import reducers from './redux/reducers/reducers';
 import rootSaga from './redux/sagas/rootSaga';
+import SnackbarProvider from './hoc/SnackBar/SnackbarProvider';
 
 
 import './index.css';
@@ -29,7 +30,9 @@ sagaMiddleware.run(rootSaga);
 render(
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <SnackbarProvider SnackbarProps={{ autoHideDuration: 2500 }}>
+                <App />
+            </SnackbarProvider>
         </BrowserRouter>
     </Provider>,
     document.getElementById('root'),

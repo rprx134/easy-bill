@@ -1,3 +1,11 @@
 .Customer{
     padding: 10px;
 }
+.Customer .card {
+    height: 200px;
+}
+
+.Customer footer {
+    padding: 10px;
+    margin-left: 12px;
+}

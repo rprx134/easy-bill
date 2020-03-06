@@ -1,7 +1,6 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Button from '../../../UI/BootstrapUI/Buttons/Button';
-import { BrowserRouter } from 'react-router-dom';
 import customers from '../../../../containers/Operations/Customers/Customers';
 import AddCustomer from '../../../../containers/Operations/Customers/AddCustomers/AddCustomers';
 import { Switch, Route } from 'react-router-dom';
