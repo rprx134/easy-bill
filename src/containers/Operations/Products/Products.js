@@ -1,58 +1,50 @@
 import React, { Component, Fragment } from 'react';
 import Product from '../../../components/Operations/Products/Product/Product';
+import { showSnackbar } from '../../../redux/actionTypes/actionTypes';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 
 class Products extends Component {
 
-    state = {
-        products: [
-            {
-                id: 1,
-                name: 'Paint',
-                description: 'This is paint for cars',
-                uom: 'Liters',
-                unitPrice: 1400,
-            },
-            {
-                id: 2,
-                name: 'Brake Pad',
-                description: 'This is break pad for cars',
-                uom: 'Quantity',
-                unitPrice: 5000,
-            },
-            {
-                id: 3,
-                name: 'Paint',
-                description: 'This is paint for cars',
-                uom: 'Liters',
-                unitPrice: 1400,
-            },
-            {
-                id: 4,
-                name: 'Brake Pad',
-                description: 'This is break pad for cars',
-                uom: 'Quantity',
-                unitPrice: 5000,
-            },
-        ]
+    componentDidMount() {
+        if (this.props.products.length === 0) {
+            this.props.showSnackbar({
+                message: 'No products present! Add one to get started.',
+                id: Date.now(),
+                variant: "info",
+            });
+        }
     }
 
     render() {
-        const products = this.state.products.map(product => {
+        const { products } = this.props;
+
+        const renderItem = products.map(product => {
             return (
-                <Product key={product.id}
+                <Product key={product._id}
                     name={product.name}
-                    description={product.description}
-                    uom={product.uom}
-                    unitPrice={product.unitPrice}
+                    baseprice={product.baseprice}
+                    sellingprice={product.sellingprice}
                 />
             );
         });
         return (
             <Fragment>
-                {products}
+                {renderItem}
             </Fragment >
         );
     }
 }
 
-export default Products;
+const mapStateToProps = state => ({
+    products: state.products,
+});
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        showSnackbar
+    }, dispatch);
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Products));

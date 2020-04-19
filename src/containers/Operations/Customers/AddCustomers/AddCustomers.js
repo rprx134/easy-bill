@@ -2,192 +2,34 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Aux from '../../../../hoc/Aux/Aux';
 import Button from '../../../../components/UI/BootstrapUI/Buttons/Button';
 import { InputValidation } from '../../../../components/POJOs/Forms/FormGenerator/FormValidation/InputValidation';
 import { formGenerator, getFormElements } from '../../../../components/POJOs/Forms/FormGenerator/FormGenerator';
 import { addCustomer } from '../../../../redux/actionTypes/actionTypes';
 import Alert from '../../../../components/UI/Modal/Alert/Alert';
+import getCustomerFormFields from '../../../../components/POJOs/Forms/AddCustomerForm';
 
 import '../../../../components/POJOs/Forms/Forms.css';
 import './AddCustomers.css';
 
-class AddProduct extends Component {
+class AddCustomer extends Component {
     state = {
-        controls: {
-            name: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Customer Name',
-                    id: "name"
-                },
-                value: '',
-                validation: {
-                    required: false,
-                    isEmail: false,
-                },
-                valid: false,
-                touched: false
-            },
-            mobile: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Mobile Number',
-                    id: "mobile"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    isEmail: false,
-                    isPhone: true,
-                },
-                valid: false,
-                touched: false
-            },
-            email: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'email',
-                    placeholder: 'Email',
-                    id: "email"
-                },
-                value: '',
-                validation: {
-                    required: false,
-                    isEmail: true,
-                },
-                valid: false,
-                touched: false
-            },
-            gstin: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'GSTIN',
-                    id: "gstin"
-                },
-                value: '',
-                validation: {
-                    required: false,
-                },
-                valid: true,
-                touched: false
-            },
-            doorno: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Door no.',
-                    id: "doorno"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false
-            },
-            line1: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Address Line 1',
-                    id: "line1"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false
-            },
-            line2: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Address Line 2',
-                    id: "line2"
-                },
-                value: '',
-                validation: {
-                    required: false,
-                },
-                valid: false,
-                touched: false
-            },
-            city: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'City',
-                    id: "city"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false
-            },
-            state: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'State',
-                    id: "state"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false
-            },
-            country: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Country',
-                    id: "country"
-                },
-                value: 'India',
-                validation: {
-                    required: true,
-                },
-                valid: true,
-                touched: false
-            },
-            pincode: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Pin Code',
-                    id: "pincode"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false
-            },
-        },
+        customerControls: getCustomerFormFields(),
         formValidity: true,
+        pageIdentifier: "formPage",
     }
 
     inputChangedHandler = (event, controlName) => {
         const updatedControls = {
-            ...this.state.controls,
+            ...this.state.customerControls,
             [controlName]: {
-                ...this.state.controls[controlName],
+                ...this.state.customerControls[controlName],
                 value: event.target.value,
-                valid: InputValidation(event.target.value, this.state.controls[controlName].validation),
+                valid: InputValidation(event.target.value, this.state.customerControls[controlName].validation),
                 touched: true
             }
         };
-        this.setState({ controls: updatedControls });
+        this.setState({ customerControls: updatedControls });
     }
 
     submitHandler = (event) => {
@@ -195,7 +37,7 @@ class AddProduct extends Component {
         let isFormValid = this.state.formValidity;
         let payload = {};
         let id;
-        getFormElements(this).forEach(formElement => {
+        getFormElements(this, "customerControls").forEach(formElement => {
             if (isFormValid) {
                 isFormValid = formElement.config.valid;
             }
@@ -255,18 +97,19 @@ class AddProduct extends Component {
         this.props.history.push('/dashboard/customers/');
     }
     render() {
+        const formToRender = formGenerator(this, "customerControls");
         return (
-            <Aux>
+            <React.Fragment>
                 <div className="AddCustomer">
                     <form onSubmit={this.submitHandler}>
                         <h4>Add Customer</h4>
-                        {formGenerator(this)}
-                        <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
+                        {formToRender}
+                        <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addCustomer" />
                         <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" btnOnClick={this.cancelHandler} />
                         {this.state.formValidity ? null : <Alert show={!this.state.formValidity} resetFormValidity={this.resetFormValidity} alertMsg="Please fill the required fields with valid content" />}
                     </form>
                 </div>
-            </Aux>
+            </React.Fragment>
         );
     }
 }
@@ -280,4 +123,4 @@ const mapDispatchToProps = (dispatch) => {
         addCustomer
     }, dispatch);
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddProduct));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddCustomer));

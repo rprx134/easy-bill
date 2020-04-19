@@ -1,0 +1,11 @@
+.invoice-page-cutomer-toggle {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.toggle-spacer {
+    margin-left: 10px;
+    display: flex;
+}

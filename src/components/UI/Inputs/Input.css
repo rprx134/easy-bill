@@ -1,7 +1,19 @@
-.InputElement {
+.formPage {
+    margin: 20px 0;
+}
+
+.selectorPage {
+    margin: 5px 0;
+    width: 30%;
+    padding: 2px;
+    padding-left: 0px;
+    display: inline-flex;
+}
+
+.FormElement {
     width: 100%;
     padding: 7px;
-    margin: 20px 0;
+    padding-left: 5px;
     display: block;
     box-sizing: border-box;
     font-size: 14px;
@@ -10,7 +22,31 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.InputElement:focus {
+input:disabled{background-color:#dddddd;}
+
+.MiniFormElement {
+    width: 90%;
+    display: inline-block;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.FormElement:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    border-top-color: rgb(128, 189, 255);
+    border-right-color: rgb(128, 189, 255);
+    border-bottom-color: rgb(128, 189, 255);
+    border-left-color: rgb(128, 189, 255);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.MiniFormElement:focus {
     color: #495057;
     background-color: #fff;
     border-color: #80bdff;

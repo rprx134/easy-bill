@@ -3,7 +3,7 @@ import './Input.css';
 
 const Input = (props) => {
     let inputElement = null;
-    const inputClasses = ["InputElement"];
+    const inputClasses = [props.inputClass];
 
     if (props.invalid && props.shouldValidate && props.touched) {
         inputClasses.push("Invalid");
@@ -15,13 +15,14 @@ const Input = (props) => {
                 className={inputClasses.join(' ')}
                 {...props.elementConfig}
                 value={props.value}
-                onChange={props.changed} />;
+                onChange={props.changed}
+                disabled={props.disabled} />;
             break;
         case 'textArea':
-            inputElement = <textarea className="form-control InputElement" rows="5" {...props.elementConfig} value={props.value} onChange={props.changed}></textarea>
+            inputElement = <textarea className="form-control InputElement" rows="5" {...props.elementConfig} value={props.value} onChange={props.changed} disabled={props.disabled} ></textarea>
             break;
         case 'select':
-            inputElement = <select className="form-control InputElement" id={props.id} value={props.value} onChange={props.changed}>
+            inputElement = <select className="form-control InputElement" id={props.id} value={props.value} onChange={props.changed} disabled={props.disabled} >
                 {
                     props.elementConfig.options.map(option => (
                         <option key={option.value} value={option.value}>
@@ -36,14 +37,14 @@ const Input = (props) => {
                 className={inputClasses.join(' ')}
                 {...props.elementConfig}
                 value={props.value}
-                onChange={props.changed} />;
+                onChange={props.changed} disabled={props.disabled} />;
             break;
 
     }
     return (
-        <div className={"Input"}>
+        <React.Fragment>
             {inputElement}
-        </div>
+        </React.Fragment>
     );
 }
 

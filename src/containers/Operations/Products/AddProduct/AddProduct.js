@@ -1,121 +1,103 @@
 import React, { Component } from 'react';
-import Aux from '../../../../hoc/Aux/Aux';
 import Button from '../../../../components/UI/BootstrapUI/Buttons/Button';
 import { InputValidation } from '../../../../components/POJOs/Forms/FormGenerator/FormValidation/InputValidation';
-import { formGenerator } from '../../../../components/POJOs/Forms/FormGenerator/FormGenerator';
-
+import { formGenerator, getFormElements } from '../../../../components/POJOs/Forms/FormGenerator/FormGenerator';
+import { addProduct } from '../../../../redux/actionTypes/actionTypes';
+import { bindActionCreators } from 'redux';
+import Alert from '../../../../components/UI/Modal/Alert/Alert';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import getProductFormFields from '../../../../components/POJOs/Forms/AddProductForm';
 import '../../../../components/POJOs/Forms/Forms.css';
 import './AddProduct.css';
 
 class AddProduct extends Component {
     state = {
-        controls: {
-            name: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Product Name',
-                    id: "productName"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    isEmail: false,
-                },
-                valid: false,
-                touched: false
-            },
-            description: {
-                inputType: 'textArea',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Product Description',
-                    id: "productDescription"
-                },
-                value: '',
-                validation: {
-                    required: false,
-                    isEmail: false
-                },
-                valid: false,
-                touched: false
-            },
-            uom: {
-                inputType: 'select',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'UOM',
-                    id: "uom",
-                    options: [
-                        {
-                            value: "quantity",
-                            displayValue: "Quantity"
-                        },
-                        {
-                            value: "meters",
-                            displayValue: "Meters"
-                        }
-                    ]
-                },
-                value: '',
-                validation: {
-                    required: false
-                },
-                valid: false,
-                touched: false
-            },
-            unitPrice: {
-                inputType: 'textBox',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Unit Price in Rupees',
-                    id: "price"
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    isMoney: true
-                },
-                valid: false,
-                touched: false
-            }
-        }
+        productControls: getProductFormFields(),
+        formValidity: true,
+        pageIdentifier: "formPage"
     }
 
     inputChangedHandler = (event, controlName) => {
         const updatedControls = {
-            ...this.state.controls,
+            ...this.state.productControls,
             [controlName]: {
-                ...this.state.controls[controlName],
+                ...this.state.productControls[controlName],
                 value: event.target.value,
-                valid: InputValidation(event.target.value, this.state.controls[controlName].validation),
+                valid: InputValidation(event.target.value, this.state.productControls[controlName].validation),
                 touched: true
             }
         };
-        this.setState({ controls: updatedControls });
+        this.setState({ productControls: updatedControls });
     }
 
     submitHandler = (event) => {
         event.preventDefault();
-        //this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);*/
-        this.props.history.push('/dashboard');
+        let isFormValid = this.state.formValidity;
+        let payload = {};
+        let id;
+        getFormElements(this, "productControls").forEach(formElement => {
+            if (isFormValid) {
+                isFormValid = formElement.config.valid;
+            }
+            switch (formElement.id) {
+                case 'name':
+                    payload = { ...payload, "name": formElement.config.value };
+                    id = formElement.config.value;
+                    break;
+                case 'basePrice':
+                    payload = { ...payload, "basePrice": formElement.config.value };
+                    break;
+                case 'sellingPrice':
+                    payload = { ...payload, "sellingPrice": formElement.config.value };
+                    break;
+                default:
+                    console.log('Error in form element id: ', formElement.id);
+                    break;
+            }
+        });
+        payload = { ...payload, "id": id };
+        if (isFormValid) {
+            this.props.addProduct(payload, this.props.history);
+        } else {
+            this.setState({ formValidity: isFormValid });
+        }
+    }
+
+    resetFormValidity = () => {
+        this.setState({ formValidity: true });
+    }
+
+    cancelHandler = () => {
+        this.props.history.push('/dashboard/products/');
     }
 
 
     render() {
+        const formToRender = formGenerator(this, "productControls");
         return (
-            <Aux>
+            <React.Fragment>
                 <div className="AddProduct">
-                        <form onSubmit={this.submitHandler}>
-                            <h4>Add Product</h4>
-                            {formGenerator(this)}
-                            <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
-                            <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" />
-                        </form>
+                    <form onSubmit={this.submitHandler}>
+                        <h4>Add Product</h4>
+                        {formToRender}
+                        <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
+                        <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" btnOnClick={this.cancelHandler} />
+                        {this.state.formValidity ? null : <Alert show={!this.state.formValidity} resetFormValidity={this.resetFormValidity} alertMsg="Please fill the required fields with valid content" />}
+                    </form>
                 </div>
-            </Aux>
+            </React.Fragment>
         );
     }
 }
 
-export default AddProduct;
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        addProduct
+    }, dispatch);
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddProduct));

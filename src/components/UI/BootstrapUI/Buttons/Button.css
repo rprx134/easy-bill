@@ -1,5 +1,3 @@
-
-
 .btn-primary {
     background-color: #4285D3!important;
     border: none!important;
@@ -25,9 +23,8 @@
 
 .btn{
     margin-right:5px;
-    padding: 7px 15px!important;
-    
-    margin-bottom: 0.4cm;
+    /* padding: 7px 15px!important;
+    margin-bottom: 0.4cm; */
 }
 .btn:last-child{
     margin-right:0px;

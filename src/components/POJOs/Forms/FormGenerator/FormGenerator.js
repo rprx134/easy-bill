@@ -1,29 +1,47 @@
 import React from 'react';
 import Input from '../../../UI/Inputs/Input';
 
-export const getFormElements = (obj) => {
+export const getFormElements = (obj, formToRender) => {
     const formElementsArray = [];
-    for (let key in obj.state.controls) {
+    let controls = {};
+    switch (formToRender) {
+        case 'customerControls':
+            controls = obj.state.customerControls;
+            break;
+        case 'productControls':
+            controls = obj.state.productControls;
+            break;
+        case 'authControls':
+            controls = obj.state.authControls;
+            break;
+        default:
+            break;
+    }
+    for (let key in controls) {
         formElementsArray.push({
             id: key,
-            config: obj.state.controls[key],
+            config: controls[key],
         });
     }
     return formElementsArray;
 }
 
-export const formGenerator = (obj) => {
-    let form = getFormElements(obj).map(formElement => {
+export const formGenerator = (obj, formToRender) => {
+    let form = getFormElements(obj, formToRender).map(formElement => {
         return (
-            <Input
-                key={formElement.id}
-                inputType={formElement.config.inputType}
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={!formElement.config.valid}
-                shouldValidate={formElement.config.validation}
-                touched={formElement.config.touched}
-                changed={(event) => obj.inputChangedHandler(event, formElement.id)} />
+            <div className={obj.state.pageIdentifier} key={formElement.id}>
+                <Input
+                    key={formElement.id}
+                    inputType={formElement.config.inputType}
+                    elementConfig={formElement.config.elementConfig}
+                    value={formElement.config.value}
+                    invalid={!formElement.config.valid}
+                    shouldValidate={formElement.config.validation}
+                    touched={formElement.config.touched}
+                    changed={(event) => obj.inputChangedHandler(event, formElement.id, formToRender)}
+                    inputClass={obj.state.pageIdentifier === "formPage" ? "FormElement" : "MiniFormElement"}
+                    disabled={obj.state.disableInputs ? true : false} />
+            </div>
         );
     });
     return form;

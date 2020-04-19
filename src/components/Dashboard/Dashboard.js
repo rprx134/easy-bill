@@ -14,7 +14,8 @@ import Col from 'react-bootstrap/Col';
 import Highlights from '../Operations/Highlights/Highlights';
 import ProductsDashboard from '../Operations/Products/Dashboard/ProductsDashboard';
 import CustomersDashboard from '../Operations/Customers/Dashboard/CustomersDashboard';
-import { getCustomers } from '../../redux/actionTypes/actionTypes';
+import InvoiceDashboard from '../Operations/Invoices/Dashboard/InvoiceDashboard';
+import { getCustomers, getProducts, getInvoices } from '../../redux/actionTypes/actionTypes';
 
 import './Dashboard.css';
 
@@ -23,6 +24,8 @@ class Navigation extends Component {
 
     componentDidMount() {
         this.props.getCustomers();
+        this.props.getProducts();
+        this.props.getInvoices();
     }
 
     render() {
@@ -36,10 +39,10 @@ class Navigation extends Component {
                                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                 <Navbar.Collapse id="basic-navbar-nav">
                                     <Nav className="mr-auto">
-                                        <Nav.Link as={Link} to="/dashboard/products/">Products</Nav.Link>
-                                        <Nav.Link as={Link} to="/dashboard/invoice/">Invoice</Nav.Link>
                                         <Nav.Link as={Link} to="/dashboard/customers/">Customers</Nav.Link>
-                                        <Nav.Link as={Link} to="/dashboard/Franchise/">Franchise</Nav.Link>
+                                        <Nav.Link as={Link} to="/dashboard/products/">Products</Nav.Link>
+                                        <Nav.Link as={Link} to="/dashboard/quotations/">Quotations</Nav.Link>
+                                        <Nav.Link as={Link} to="/dashboard/invoice/">Invoice</Nav.Link>
                                     </Nav>
                                     <Form inline>
                                         <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -70,6 +73,8 @@ class Navigation extends Component {
                                         <Route key="addProductView" exact path="/dashboard/products/addnew/" component={ProductsDashboard} />
                                         <Route key="customerDashboardView" path="/dashboard/customers/" exact component={CustomersDashboard} />
                                         <Route key="addCustomerView" exact path="/dashboard/customers/addnew/" component={CustomersDashboard} />
+                                        <Route key="invoiceDashboardView" exact path="/dashboard/invoice/" component={InvoiceDashboard} />
+                                        <Route key="createInvoiceView" exact path="/dashboard/invoice/createInvoice" component={InvoiceDashboard} />
                                     </Switch>
                                 </Col>
                             </Row>
@@ -87,7 +92,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        getCustomers
+        getCustomers,
+        getProducts,
+        getInvoices,
     }, dispatch);
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));
