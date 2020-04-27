@@ -10,7 +10,7 @@ import {
 } from '../actionTypes/actionTypes';
 import { getAllCustomers, addCustomer } from '../../api/CustomersAPI';
 import { getAllProducts, addProduct } from '../../api/ProductsAPI';
-import { getAllInvoices, createInvoice } from '../../api/InvoiceAPI';
+import { getAllInvoices, createInvoice, downloadInvoiceAsDocx } from '../../api/InvoiceAPI';
 import getErrorMessage from '../../api/APIErrors';
 
 function* getCustomersSaga() {
@@ -73,6 +73,35 @@ function* createInvoiceSaga(action) {
     }
 }
 
+function* downloadInvoiceAsDocxSaga(action) {
+    try {
+        let { data } = yield call(downloadInvoiceAsDocx, action.payload);
+        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        if (navigator.msSaveOrOpenBlob)
+            navigator.msSaveOrOpenBlob(blob, 'filename.docx');
+        else {
+            var link = document.createElement('a');
+            var URL = window.URL || window.webkitURL;
+            var downloadUrl = URL.createObjectURL(blob);
+            link.href = downloadUrl;
+            link.style = "display: none";
+            link.download = 'filename.docx';
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(function () {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(downloadUrl);
+            }, 100);
+        }
+        // const fileBlob = yield data.blob();
+        // using downloadjs https://www.npmjs.com/package/downloadjs
+        // download(fileBlob);
+        yield put(showSnackbar({ message: 'Invoice Downloaded Successfully' }));
+    } catch (e) {
+        yield put(showSnackbar(getErrorMessage(e)));
+    }
+}
+
 export function* watchGetCustomers() {
     yield takeLatest('GET_CUSTOMERS', getCustomersSaga);
 }
@@ -95,4 +124,8 @@ export function* watchGetInvoices() {
 
 export function* watchCreateInvoice() {
     yield takeLatest('CREATE_INVOICE', createInvoiceSaga)
+}
+
+export function* watchDownloadInvoiceAsDocx() {
+    yield takeLatest('DOWNLOAD_INVOICE_AS_DOCX', downloadInvoiceAsDocxSaga)
 }

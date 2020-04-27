@@ -46,6 +46,8 @@ const reducers = (state = initialState, action) => {
           case 'SNACKBAR_HIDE':
                snackbar.queue = snackbar.queue.filter((snackbar) => snackbar.id !== action.payload.id);
                return { ...state, snackbar };
+          case 'DOWNLOAD_INVOICE_AS_DOCX':
+               return { ...state };
           default:
                return state;
      }

@@ -53,3 +53,7 @@ export const createInvoice = (invoiceData, history) => {
 export const createInvoiceSuccess = (invoiceData) => {
     return { type: 'CREATE_INVOICE_SUCCESS', payload: invoiceData };
 }
+
+export const downloadInvoiceAsDocx = (invoiceData) => {
+    return { type: 'DOWNLOAD_INVOICE_AS_DOCX', payload: invoiceData };
+}

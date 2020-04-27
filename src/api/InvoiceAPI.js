@@ -12,5 +12,14 @@ export const createInvoice = (payload) => {
         method: 'post',
         url: 'http://localhost:4000/invoices/CreateInvoice',
         data: payload
-      });
+    });
+}
+
+export const downloadInvoiceAsDocx = (payload) => {
+    return axios.request({
+        method: 'get',
+        url: 'http://localhost:4000/invoices/DownloadInvoiceAsDocx?invoiceID=' + payload.invoiceID,
+        responseType: 'blob',
+        timeout: 30000,
+    });
 }

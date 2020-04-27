@@ -6,6 +6,7 @@ import {
   watchAddProducts,
   watchGetInvoices,
   watchCreateInvoice,
+  watchDownloadInvoiceAsDocx,
 } from './sagas';
 export default function* rootSaga() {
   yield all([
@@ -15,5 +16,6 @@ export default function* rootSaga() {
     watchAddProducts(),
     watchGetInvoices(),
     watchCreateInvoice(),
+    watchDownloadInvoiceAsDocx(),
   ]);
 }

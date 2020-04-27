@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import Invoice from '../../../components/Operations/Invoices/Invoice';
-import { showSnackbar } from '../../../redux/actionTypes/actionTypes';
+import {
+    showSnackbar,
+    downloadInvoiceAsDocx,
+} from '../../../redux/actionTypes/actionTypes';
 import { bindActionCreators } from 'redux';
 import _find from 'lodash/find';
-import App from '../../../components/Operations/WordDocumentGenerator/example';
-
 
 class Invoices extends Component {
 
@@ -22,7 +23,7 @@ class Invoices extends Component {
 
     downloadAsDocHandler = (invoiceID) => {
         console.log(invoiceID);
-        
+        this.props.downloadInvoiceAsDocx({invoiceID});
     }
 
     render() {
@@ -53,7 +54,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        showSnackbar
+        showSnackbar,
+        downloadInvoiceAsDocx,
     }, dispatch);
 }
 
