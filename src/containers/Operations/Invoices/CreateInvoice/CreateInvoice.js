@@ -9,6 +9,7 @@ import _find from 'lodash/find';
 import _findIndex from 'lodash/findIndex';
 import _remove from 'lodash/remove';
 import _isEmpty from 'lodash/isEmpty';
+import _sumBy from 'lodash/sumBy';
 import AddProductToInvoice from '../../../../components/Operations/Products/Product/AddProductToInvoice';
 import AutoSuggest from '../../../../components/Operations/AutoSuggestion/AutoSuggest';
 import { getCustomerSuggestions } from '../../../../components/Operations/AutoSuggestion/getCustomerSuggestions';
@@ -17,6 +18,7 @@ import ToggleSwitch from '../../../../components/UI/ToggleSwitch/ToggleSwitch';
 import Alert from '../../../../components/UI/Modal/Alert/Alert';
 import BagDetails from '../../QuotationAndInvoice/BagDetails';
 import { createInvoice } from '../../../../redux/actionTypes/actionTypes';
+import { getCrrDate } from '../../../../components/POJOs/GetCurrentDate';
 
 import './CreateInvoice.css';
 
@@ -32,6 +34,7 @@ class CreateInvoice extends Component {
             subTotal: 0.00,
             gst: 0.00,
             grandTotal: 0.00,
+            date: null,
         },
         alert: {
             showAlert: false,
@@ -87,18 +90,17 @@ class CreateInvoice extends Component {
     }
 
     getInvoiceSubTotal = () => {
-        let updatedSubTotal = 0;
-        this.state.invoice.products.forEach(product => {
-            updatedSubTotal = updatedSubTotal + product.totalPrice;
-        });
-        return updatedSubTotal;
+        const invoiceSubTotal = _sumBy(this.state.invoice.products, (product) => parseFloat(product.totalPrice));
+        return invoiceSubTotal;
     }
 
-    roundOfPrice = (value, decimals) => {
-        return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+    roundOfPrice = (value, decimals=2) => {
+        // return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        return parseFloat(value).toFixed(decimals);
     }
 
-    addToBagHandler = (productID, quantity, sellingPrice) => {
+    addToBagHandler = (productID, quantity, sellingPrice, name) => {
+        console.log(name);
         const isProductInBag = _find(this.state.invoice.products, (product) => product.id === productID);
         if (isProductInBag) {
             const updatedInvoice = {
@@ -112,20 +114,21 @@ class CreateInvoice extends Component {
                 updatedInvoice.products = updatedProducts;
                 updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
                 updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-                updatedInvoice.grandTotal = this.roundOfPrice((updatedInvoice.subTotal + updatedInvoice.gst), 2);
+                updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
                 this.setState({ invoice: updatedInvoice });
             } else {
                 let index = _findIndex(updatedInvoice.products, { id: productID });
                 updatedInvoice.products.splice(index, 1, {
                     id: productID,
                     quantity,
-                    sellingPrice,
-                    totalPrice: quantity * sellingPrice
+                    name,
+                    sellingPrice: this.roundOfPrice(sellingPrice, 2),
+                    totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
                 });
             }
             updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
             updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = this.roundOfPrice((updatedInvoice.subTotal + updatedInvoice.gst), 2);
+            updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
             this.setState({ invoice: updatedInvoice });
         } else if (quantity !== 0) {
             const updatedInvoice = {
@@ -134,12 +137,13 @@ class CreateInvoice extends Component {
             updatedInvoice.products.push({
                 id: productID,
                 quantity,
-                sellingPrice,
-                totalPrice: quantity * sellingPrice
+                name,
+                sellingPrice: this.roundOfPrice(sellingPrice, 2),
+                totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
             });
             updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
             updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = this.roundOfPrice((updatedInvoice.subTotal + updatedInvoice.gst), 2);
+            updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
             this.setState({ invoice: updatedInvoice });
         }
     }
@@ -169,13 +173,14 @@ class CreateInvoice extends Component {
         } else {
             const payload = {
                 ...this.state.invoice,
+                date: getCrrDate()
             }
+            console.log(payload);
             this.props.createInvoice(payload, this.props.history);
         }
     }
 
     render() {
-        console.log(this.state.invoice);
         const { products } = this.props;
         // const selectCustomerView = formGenerator(this, "customerControls");
         const renderProducts = products.map(product => {

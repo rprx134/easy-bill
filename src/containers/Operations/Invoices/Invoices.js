@@ -22,7 +22,6 @@ class Invoices extends Component {
     }
 
     downloadAsDocHandler = (invoiceID) => {
-        console.log(invoiceID);
         this.props.downloadInvoiceAsDocx({invoiceID});
     }
 

@@ -25,6 +25,7 @@ const addProductToInvoice = (props) => {
                         addToBag={props.addToBag}
                         id={props.id}
                         sellingprice={props.sellingprice}
+                        name={props.name}
                     />
                 </Col>
             </Row>

@@ -77,26 +77,26 @@ function* downloadInvoiceAsDocxSaga(action) {
     try {
         let { data } = yield call(downloadInvoiceAsDocx, action.payload);
         var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-        if (navigator.msSaveOrOpenBlob)
-            navigator.msSaveOrOpenBlob(blob, 'filename.docx');
+        const fileName = 'Invoice-'.concat(action.payload.invoiceID.concat('.docx'));
+        if (navigator.msSaveOrOpenBlob) {
+            navigator.msSaveOrOpenBlob(blob, fileName);
+            yield put(showSnackbar({ message: 'Invoice Downloaded Successfully' }));
+        }
         else {
             var link = document.createElement('a');
             var URL = window.URL || window.webkitURL;
             var downloadUrl = URL.createObjectURL(blob);
             link.href = downloadUrl;
             link.style = "display: none";
-            link.download = 'filename.docx';
+            link.download = fileName;
             document.body.appendChild(link);
             link.click();
             setTimeout(function () {
                 document.body.removeChild(link);
                 window.URL.revokeObjectURL(downloadUrl);
             }, 100);
+            yield put(showSnackbar({ message: 'Invoice Downloaded Successfully' }));
         }
-        // const fileBlob = yield data.blob();
-        // using downloadjs https://www.npmjs.com/package/downloadjs
-        // download(fileBlob);
-        yield put(showSnackbar({ message: 'Invoice Downloaded Successfully' }));
     } catch (e) {
         yield put(showSnackbar(getErrorMessage(e)));
     }

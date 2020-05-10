@@ -8,11 +8,12 @@ class BagDetailsToggle extends React.Component {
     state = {
         quantityValue: 0,
         sellingprice: this.props.sellingprice,
+        name: this.props.name
     };
     quantityOnChange = (value) => {
         if (Number.isInteger(value) && value <= 100) {
             this.setState({ quantityValue: value }, () => {
-                this.props.addToBag(this.props.id, this.state.quantityValue, this.state.sellingprice);
+                this.props.addToBag(this.props.id, this.state.quantityValue, this.state.sellingprice, this.state.name);
             });
         }
     }
@@ -20,7 +21,7 @@ class BagDetailsToggle extends React.Component {
     sellingPriceOnChange = (value) => {
         if (!isNaN(value) && value >= 0) {
             this.setState({ sellingprice: value }, () => {
-                this.props.addToBag(this.props.id, this.state.quantityValue, this.state.sellingprice);
+                this.props.addToBag(this.props.id, this.state.quantityValue, this.state.sellingprice, this.state.name);
             });
         }
     }
