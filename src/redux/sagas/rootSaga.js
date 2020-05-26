@@ -7,6 +7,8 @@ import {
   watchGetInvoices,
   watchCreateInvoice,
   watchDownloadInvoiceAsDocx,
+  watchUserLoginSaga,
+  watchIsLoggedInSaga,
 } from './sagas';
 export default function* rootSaga() {
   yield all([
@@ -17,5 +19,7 @@ export default function* rootSaga() {
     watchGetInvoices(),
     watchCreateInvoice(),
     watchDownloadInvoiceAsDocx(),
+    watchUserLoginSaga(),
+    watchIsLoggedInSaga(),
   ]);
 }

@@ -57,3 +57,15 @@ export const createInvoiceSuccess = (invoiceData) => {
 export const downloadInvoiceAsDocx = (invoiceData) => {
     return { type: 'DOWNLOAD_INVOICE_AS_DOCX', payload: invoiceData };
 }
+
+export const authenticateUser = (userCred, history) => {
+    return { type: 'AUTHENTICATE_USER', payload: userCred, history };
+}
+
+export const authenticationSuccess = (token) => {
+    return { type: 'AUTHENTICATION_SUCCESS', payload: token };
+}
+
+export const isLoggedIn = (history) => {
+    return { type: 'IS_LOGGED_IN', history };
+}
