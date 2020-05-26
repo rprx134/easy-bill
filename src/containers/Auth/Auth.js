@@ -72,7 +72,7 @@ class Auth extends Component {
             <React.Fragment>
                 <Container>
                     <Row className="forms">
-                        <Col xl="4" md="6" sm="8">
+                        <Col xl="7" md="6" sm="8">
                             <form onSubmit={this.submitHandler} noValidate>
                                 <h4>Please sign in.</h4>
                                 {formGenerator(this, "authControls")}

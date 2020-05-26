@@ -8,6 +8,9 @@ import {
     invoicesFetched,
     createInvoiceSuccess,
     authenticationSuccess,
+    getCustomers,
+    getProducts,
+    getInvoices
 } from '../actionTypes/actionTypes';
 import { getAllCustomers, addCustomer } from '../../api/CustomersAPI';
 import { getAllProducts, addProduct } from '../../api/ProductsAPI';
@@ -116,9 +119,12 @@ function* userLoginSaga(action) {
 }
 
 function* isLoggedInSaga(action) {
-    if(!window.sessionStorage.getItem("token")) {
+    if (!window.sessionStorage.getItem("token")) {
         yield action.history.push("/login/");
     }
+    yield put(getCustomers());
+    yield put(getProducts());
+    yield put(getInvoices());
 }
 
 export function* watchGetCustomers() {
