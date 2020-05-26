@@ -15,7 +15,7 @@ import Highlights from '../Operations/Highlights/Highlights';
 import ProductsDashboard from '../Operations/Products/Dashboard/ProductsDashboard';
 import CustomersDashboard from '../Operations/Customers/Dashboard/CustomersDashboard';
 import InvoiceDashboard from '../Operations/Invoices/Dashboard/InvoiceDashboard';
-import { getCustomers, getProducts, getInvoices, isLoggedIn } from '../../redux/actionTypes/actionTypes';
+import { isLoggedIn } from '../../redux/actionTypes/actionTypes';
 
 import './Dashboard.css';
 
@@ -24,9 +24,6 @@ class Navigation extends Component {
 
     componentDidMount() {
         this.props.isLoggedIn(this.props.history);
-        this.props.getCustomers();
-        this.props.getProducts();
-        this.props.getInvoices();
     }
 
     render() {
@@ -93,9 +90,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        getCustomers,
-        getProducts,
-        getInvoices,
         isLoggedIn,
     }, dispatch);
 }
