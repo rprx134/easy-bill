@@ -4,12 +4,16 @@ import Button from '../../components/UI/BootstrapUI/Buttons/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import { InputValidation } from '../../components/POJOs/Forms/FormGenerator/FormValidation/InputValidation';
 import Anchor from '../../components/UI/BootstrapUI/Anchor/Anchor';
 import { formGenerator, getFormElements } from '../../components/POJOs/Forms/FormGenerator/FormGenerator';
 import Alert from '../../components/UI/Modal/Alert/Alert';
 import getAuthFormFields from '../../components/POJOs/Forms/LoginForm';
 import '../../components/POJOs/Forms/Forms.css';
+import { authenticateUser } from '../../redux/actionTypes/actionTypes';
 
 class Auth extends Component {
 
@@ -42,7 +46,11 @@ class Auth extends Component {
             isFormValid = formElement.config.valid;
         });
         if (isFormValid) {
-            this.props.history.push("/dashboard");
+            const payload = {
+                email: this.state.authControls.email.value,
+                password: this.state.authControls.password.value,
+            };
+            this.props.authenticateUser(payload, this.props.history);
         } else {
             this.setState({ formValidity: isFormValid });
         }
@@ -91,4 +99,10 @@ class Auth extends Component {
     }
 }
 
-export default Auth;
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        authenticateUser
+    }, dispatch);
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(Auth));

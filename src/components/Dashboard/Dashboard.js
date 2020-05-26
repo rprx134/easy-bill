@@ -15,7 +15,7 @@ import Highlights from '../Operations/Highlights/Highlights';
 import ProductsDashboard from '../Operations/Products/Dashboard/ProductsDashboard';
 import CustomersDashboard from '../Operations/Customers/Dashboard/CustomersDashboard';
 import InvoiceDashboard from '../Operations/Invoices/Dashboard/InvoiceDashboard';
-import { getCustomers, getProducts, getInvoices } from '../../redux/actionTypes/actionTypes';
+import { getCustomers, getProducts, getInvoices, isLoggedIn } from '../../redux/actionTypes/actionTypes';
 
 import './Dashboard.css';
 
@@ -23,6 +23,7 @@ import './Dashboard.css';
 class Navigation extends Component {
 
     componentDidMount() {
+        this.props.isLoggedIn(this.props.history);
         this.props.getCustomers();
         this.props.getProducts();
         this.props.getInvoices();
@@ -95,6 +96,7 @@ const mapDispatchToProps = (dispatch) => {
         getCustomers,
         getProducts,
         getInvoices,
+        isLoggedIn,
     }, dispatch);
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));

@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from './AxiosInstance';
 
 export const getAllCustomers = () => {
     return axios.request({
         method: 'get',
-        url: 'http://localhost:4000/customers/getAllCustomers',
+        url: 'customers/getAllCustomers',
     });
 }
 
 export const addCustomer = (payload) => {
     return axios.request({
         method: 'post',
-        url: 'http://localhost:4000/customers/AddCustomer',
+        url: 'customers/AddCustomer',
         data: payload
       });
 }

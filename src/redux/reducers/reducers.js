@@ -48,6 +48,9 @@ const reducers = (state = initialState, action) => {
                return { ...state, snackbar };
           case 'DOWNLOAD_INVOICE_AS_DOCX':
                return { ...state };
+          case 'AUTHENTICATION_SUCCESS':
+               window.sessionStorage.setItem("token", action.payload);
+               return state;
           default:
                return state;
      }

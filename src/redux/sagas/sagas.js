@@ -7,10 +7,12 @@ import {
     addProductSuccess,
     invoicesFetched,
     createInvoiceSuccess,
+    authenticationSuccess,
 } from '../actionTypes/actionTypes';
 import { getAllCustomers, addCustomer } from '../../api/CustomersAPI';
 import { getAllProducts, addProduct } from '../../api/ProductsAPI';
 import { getAllInvoices, createInvoice, downloadInvoiceAsDocx } from '../../api/InvoiceAPI';
+import { authenticateUser } from '../../api/AuthAPI';
 import getErrorMessage from '../../api/APIErrors';
 
 function* getCustomersSaga() {
@@ -102,6 +104,23 @@ function* downloadInvoiceAsDocxSaga(action) {
     }
 }
 
+function* userLoginSaga(action) {
+    try {
+        let { data } = yield call(authenticateUser, action.payload);
+        yield put(authenticationSuccess(data));
+        action.history.push("/dashboard/");
+        window.location.reload();
+    } catch (e) {
+        yield put(showSnackbar(getErrorMessage(e)));
+    }
+}
+
+function* isLoggedInSaga(action) {
+    if(!window.sessionStorage.getItem("token")) {
+        yield action.history.push("/login/");
+    }
+}
+
 export function* watchGetCustomers() {
     yield takeLatest('GET_CUSTOMERS', getCustomersSaga);
 }
@@ -123,9 +142,17 @@ export function* watchGetInvoices() {
 }
 
 export function* watchCreateInvoice() {
-    yield takeLatest('CREATE_INVOICE', createInvoiceSaga)
+    yield takeLatest('CREATE_INVOICE', createInvoiceSaga);
 }
 
 export function* watchDownloadInvoiceAsDocx() {
-    yield takeLatest('DOWNLOAD_INVOICE_AS_DOCX', downloadInvoiceAsDocxSaga)
+    yield takeLatest('DOWNLOAD_INVOICE_AS_DOCX', downloadInvoiceAsDocxSaga);
+}
+
+export function* watchUserLoginSaga() {
+    yield takeLatest('AUTHENTICATE_USER', userLoginSaga);
+}
+
+export function* watchIsLoggedInSaga() {
+    yield takeLatest('IS_LOGGED_IN', isLoggedInSaga);
 }

@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from './AxiosInstance';
 
 export const getAllProducts = () => {
     return axios.request({
         method: 'get',
-        url: 'http://localhost:4000/products/getAllProducts',
+        url: 'products/getAllProducts',
     });
 }
 
 export const addProduct = (payload) => {
     return axios.request({
         method: 'post',
-        url: 'http://localhost:4000/products/AddProduct',
+        url: 'products/AddProduct',
         data: payload
       });
 }
