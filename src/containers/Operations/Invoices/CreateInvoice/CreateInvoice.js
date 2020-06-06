@@ -225,10 +225,10 @@ class CreateInvoice extends Component {
                         </Col>
                     </Row> */}
                     <Row style={{ paddingLeft: 5, marginTop: 5, marginBottom: 5 }}>
-                        <Col xs={4} lg={7}>
+                        <Col xs={4} lg={6}>
                             <h5>Product Name</h5>
                         </Col>
-                        <Col xs={8} lg={5} style={{ display: 'flex' }}>
+                        <Col xs={8} lg={6} style={{ display: 'flex' }}>
                             <Col xs={6} lg={6}>
                                 <h5>Quantity</h5>
                             </Col>

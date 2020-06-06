@@ -17,10 +17,10 @@ const addProductToQuotation = (props) => {
             backgroundColor: '#F0F0F0'
         }}>
             <Row style={{ paddingLeft: 5, marginTop: 5, marginBottom: 5 }}>
-                <Col xs={4} lg={7}>
+                <Col xs={4} lg={6}>
                     {props.name}
                 </Col>
-                <Col xs={8} lg={5} style={{ display: 'flex' }}>
+                <Col xs={8} lg={6} style={{ display: 'flex' }}>
                     <BagDetailsToggle
                         addToBag={props.addToBag}
                         id={props.id}

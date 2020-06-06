@@ -18,7 +18,7 @@ import ToggleSwitch from '../../../../components/UI/ToggleSwitch/ToggleSwitch';
 import Alert from '../../../../components/UI/Modal/Alert/Alert';
 import BagDetails from '../../QuotationAndInvoice/BagDetails';
 import { createQuotation } from '../../../../redux/actionTypes/actionTypes';
-import { getCrrDate } from '../../../../components/POJOs/GetCurrentDate';
+import { getCrrDate, getquotationExpiryDate } from '../../../../components/POJOs/GetCurrentDate';
 
 import './CreateQuotation.css';
 
@@ -34,7 +34,8 @@ class CreateQuotation extends Component {
             subTotal: 0.00,
             gst: 0.00,
             grandTotal: 0.00,
-            date: null,
+            issueDate: null,
+            expiryDate: null,
         },
         alert: {
             showAlert: false,
@@ -173,7 +174,8 @@ class CreateQuotation extends Component {
         } else {
             const payload = {
                 ...this.state.quotation,
-                date: getCrrDate()
+                issueDate: getCrrDate(),
+                expiryDate: getquotationExpiryDate(),
             }
             console.log(payload);
             this.props.createQuotation(payload, this.props.history);
@@ -225,10 +227,10 @@ class CreateQuotation extends Component {
                         </Col>
                     </Row> */}
                     <Row style={{ paddingLeft: 5, marginTop: 5, marginBottom: 5 }}>
-                        <Col xs={4} lg={7}>
+                        <Col xs={4} lg={6}>
                             <h5>Product Name</h5>
                         </Col>
-                        <Col xs={8} lg={5} style={{ display: 'flex' }}>
+                        <Col xs={8} lg={6} style={{ display: 'flex' }}>
                             <Col xs={6} lg={6}>
                                 <h5>Quantity</h5>
                             </Col>
