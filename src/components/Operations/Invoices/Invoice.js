@@ -11,7 +11,7 @@ const invoice = (props) => {
         <div className='Invoice'>
             <Card style={{ width: '18rem' }}>
                 <Card.Body>
-                    <Card.Title>Invoice ID: {props.id}</Card.Title>
+                    <Card.Title>Invoice ID: {props.id.substring(2)}</Card.Title>
                     <Card.Text>
                         Customer Name: {props.selectedCustomer.name}
                     </Card.Text>

@@ -11,7 +11,7 @@ const quotation = (props) => {
         <div className='Quotation'>
             <Card style={{ width: '18rem' }}>
                 <Card.Body>
-                    <Card.Title>Quotation ID: {props.id}</Card.Title>
+                    <Card.Title>Quotation ID: {props.id.substring(2)}</Card.Title>
                     <Card.Text>
                         Customer Name: {props.selectedCustomer.name}
                     </Card.Text>
