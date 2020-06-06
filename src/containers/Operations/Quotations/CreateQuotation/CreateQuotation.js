@@ -10,24 +10,24 @@ import _findIndex from 'lodash/findIndex';
 import _remove from 'lodash/remove';
 import _isEmpty from 'lodash/isEmpty';
 import _sumBy from 'lodash/sumBy';
-import AddProductToInvoice from '../../../../components/Operations/Products/Product/AddProductToInvoice';
+import AddProductToQuotation from '../../../../components/Operations/Products/Product/AddProductToQuotation';
 import AutoSuggest from '../../../../components/Operations/AutoSuggestion/AutoSuggest';
 import { getCustomerSuggestions } from '../../../../components/Operations/AutoSuggestion/getCustomerSuggestions';
 import getCustomerFormFields from '../../../../components/POJOs/Forms/AddCustomerForm';
 import ToggleSwitch from '../../../../components/UI/ToggleSwitch/ToggleSwitch';
 import Alert from '../../../../components/UI/Modal/Alert/Alert';
 import BagDetails from '../../QuotationAndInvoice/BagDetails';
-import { createInvoice } from '../../../../redux/actionTypes/actionTypes';
+import { createQuotation } from '../../../../redux/actionTypes/actionTypes';
 import { getCrrDate } from '../../../../components/POJOs/GetCurrentDate';
 
-import './CreateInvoice.css';
+import './CreateQuotation.css';
 
-class CreateInvoice extends Component {
+class CreateQuotation extends Component {
     state = {
         customerControls: getCustomerFormFields(),
         pageIdentifier: "selectorPage",
         disableInputs: true,
-        invoice: {
+        quotation: {
             quotationID: '',
             customerID: '',
             products: [],
@@ -82,16 +82,16 @@ class CreateInvoice extends Component {
 
     selectedCustomerHandler = (id) => {
         const selectedCustomer = _find(this.props.customers, (customer) => customer._id === id)._id;
-        const updatedInvoice = {
-            ...this.state.invoice,
+        const updatedQuotation = {
+            ...this.state.quotation,
             customerID: selectedCustomer,
         };
-        this.setState({ invoice: updatedInvoice });
+        this.setState({ quotation: updatedQuotation });
     }
 
-    getInvoiceSubTotal = () => {
-        const invoiceSubTotal = _sumBy(this.state.invoice.products, (product) => parseFloat(product.totalPrice));
-        return invoiceSubTotal;
+    getQuotationSubTotal = () => {
+        const quotationSubTotal = _sumBy(this.state.quotation.products, (product) => parseFloat(product.totalPrice));
+        return quotationSubTotal;
     }
 
     roundOfPrice = (value, decimals=2) => {
@@ -101,24 +101,24 @@ class CreateInvoice extends Component {
 
     addToBagHandler = (productID, quantity, sellingPrice, name) => {
         console.log(name);
-        const isProductInBag = _find(this.state.invoice.products, (product) => product.id === productID);
+        const isProductInBag = _find(this.state.quotation.products, (product) => product.id === productID);
         if (isProductInBag) {
-            const updatedInvoice = {
-                ...this.state.invoice,
+            const updatedQuotation = {
+                ...this.state.quotation,
             };
             if (quantity === 0) {
-                const updatedInvoice = {
-                    ...this.state.invoice,
+                const updatedQuotation = {
+                    ...this.state.quotation,
                 };
-                let updatedProducts = _remove(this.state.invoice.products, (product) => product.id === productID);
-                updatedInvoice.products = updatedProducts;
-                updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
-                updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-                updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
-                this.setState({ invoice: updatedInvoice });
+                let updatedProducts = _remove(this.state.quotation.products, (product) => product.id === productID);
+                updatedQuotation.products = updatedProducts;
+                updatedQuotation.subTotal = this.roundOfPrice(this.getQuotationSubTotal(), 2);
+                updatedQuotation.gst = this.roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
+                updatedQuotation.grandTotal = this.roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
+                this.setState({ quotation: updatedQuotation });
             } else {
-                let index = _findIndex(updatedInvoice.products, { id: productID });
-                updatedInvoice.products.splice(index, 1, {
+                let index = _findIndex(updatedQuotation.products, { id: productID });
+                updatedQuotation.products.splice(index, 1, {
                     id: productID,
                     quantity,
                     name,
@@ -126,25 +126,25 @@ class CreateInvoice extends Component {
                     totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
                 });
             }
-            updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
-            updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
-            this.setState({ invoice: updatedInvoice });
+            updatedQuotation.subTotal = this.roundOfPrice(this.getQuotationSubTotal(), 2);
+            updatedQuotation.gst = this.roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
+            updatedQuotation.grandTotal = this.roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
+            this.setState({ quotation: updatedQuotation });
         } else if (quantity !== 0) {
-            const updatedInvoice = {
-                ...this.state.invoice,
+            const updatedQuotation = {
+                ...this.state.quotation,
             };
-            updatedInvoice.products.push({
+            updatedQuotation.products.push({
                 id: productID,
                 quantity,
                 name,
                 sellingPrice: this.roundOfPrice(sellingPrice, 2),
                 totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
             });
-            updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
-            updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
-            this.setState({ invoice: updatedInvoice });
+            updatedQuotation.subTotal = this.roundOfPrice(this.getQuotationSubTotal(), 2);
+            updatedQuotation.gst = this.roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
+            updatedQuotation.grandTotal = this.roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
+            this.setState({ quotation: updatedQuotation });
         }
     }
     resetAlert = () => {
@@ -155,15 +155,15 @@ class CreateInvoice extends Component {
         updatedAlert.alertMessage = '';
         this.setState({ alert: updatedAlert });
     }
-    createInvoiceHandler = () => {
-        if (_isEmpty(this.state.invoice.customerID)) {
+    createQuotationHandler = () => {
+        if (_isEmpty(this.state.quotation.customerID)) {
             const updatedAlert = {
                 ...this.state.alert,
             };
             updatedAlert.showAlert = true;
             updatedAlert.alertMessage = 'Please Select a Customer!';
             this.setState({ alert: updatedAlert });
-        } else if (_isEmpty(this.state.invoice.products)) {
+        } else if (_isEmpty(this.state.quotation.products)) {
             const updatedAlert = {
                 ...this.state.alert,
             };
@@ -172,11 +172,11 @@ class CreateInvoice extends Component {
             this.setState({ alert: updatedAlert });
         } else {
             const payload = {
-                ...this.state.invoice,
+                ...this.state.quotation,
                 date: getCrrDate()
             }
             console.log(payload);
-            this.props.createInvoice(payload, this.props.history);
+            this.props.createQuotation(payload, this.props.history);
         }
     }
 
@@ -185,7 +185,7 @@ class CreateInvoice extends Component {
         // const selectCustomerView = formGenerator(this, "customerControls");
         const renderProducts = products.map(product => {
             return (
-                <AddProductToInvoice key={product._id}
+                <AddProductToQuotation key={product._id}
                     name={product.name}
                     id={product._id}
                     sellingprice={product.sellingprice}
@@ -221,7 +221,7 @@ class CreateInvoice extends Component {
                     {/* <Row>
                         <Col xl="12" md="12" sm="12">
                             {selectCustomerView}
-                            <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addCustomerInvoicePage" disabled={this.state.disableInputs} />
+                            <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addCustomerQuotationPage" disabled={this.state.disableInputs} />
                         </Col>
                     </Row> */}
                     <Row style={{ paddingLeft: 5, marginTop: 5, marginBottom: 5 }}>
@@ -249,13 +249,13 @@ class CreateInvoice extends Component {
                     <BagDetails
                         customers={this.props.customers}
                         products={this.props.products}
-                        selectedCustomerID={this.state.invoice.customerID}
-                        selectedProducts={this.state.invoice.products}
-                        subTotal={this.state.invoice.subTotal}
-                        gst={this.state.invoice.gst}
-                        grandTotal={this.state.invoice.grandTotal}
-                        createInvoiceBtnClick={this.createInvoiceHandler}
-                        parentOperation={'invoice'}
+                        selectedCustomerID={this.state.quotation.customerID}
+                        selectedProducts={this.state.quotation.products}
+                        subTotal={this.state.quotation.subTotal}
+                        gst={this.state.quotation.gst}
+                        grandTotal={this.state.quotation.grandTotal}
+                        createQuotationBtnClick={this.createQuotationHandler}
+                        parentOperation={'quotation'}
                     />
                 </Col>
                 {
@@ -278,7 +278,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        createInvoice,
+        createQuotation,
     }, dispatch);
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateInvoice));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateQuotation));

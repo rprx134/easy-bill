@@ -5,6 +5,7 @@ const initialState = {
      customers: [],
      products: [],
      invoices: [],
+     quotations: [],
 }
 
 const reducers = (state = initialState, action) => {
@@ -30,6 +31,18 @@ const reducers = (state = initialState, action) => {
                let { products } = state;
                products.push(action.payload);
                return { ...state, products };
+          case 'GET_QUOTATION':
+               return { ...state };
+          case 'QUOTATIONS_FETCHED':
+               return { ...state, quotations: action.payload };
+          case 'CREATE_QUOTATION':
+               return { ...state };
+          case 'CREATE_QUOTATION_SUCCESS':
+               let { quotations } = state;
+               quotations.push(action.payload);
+               return { ...state, quotations };
+          case 'DOWNLOAD_QUOTATION_AS_DOCX':
+               return { ...state };
           case 'GET_INVOICE':
                return { ...state };
           case 'INVOICES_FETCHED':
@@ -40,14 +53,14 @@ const reducers = (state = initialState, action) => {
                let { invoices } = state;
                invoices.push(action.payload);
                return { ...state, invoices };
+          case 'DOWNLOAD_INVOICE_AS_DOCX':
+               return { ...state };
           case 'SNACKBAR_SHOW':
                snackbar.queue.push({ id: Date.now(), ...action.payload });
                return { ...state, snackbar };
           case 'SNACKBAR_HIDE':
                snackbar.queue = snackbar.queue.filter((snackbar) => snackbar.id !== action.payload.id);
                return { ...state, snackbar };
-          case 'DOWNLOAD_INVOICE_AS_DOCX':
-               return { ...state };
           case 'AUTHENTICATION_SUCCESS':
                window.sessionStorage.setItem("token", action.payload);
                return state;

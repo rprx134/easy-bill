@@ -5,15 +5,19 @@ import {
     showSnackbar,
     productsFetched,
     addProductSuccess,
-    invoicesFetched,
-    createInvoiceSuccess,
     authenticationSuccess,
     getCustomers,
     getProducts,
-    getInvoices
+    getInvoices,
+    createInvoiceSuccess,
+    invoicesFetched,
+    getQuotations,
+    createQuotationSuccess,
+    quotationsFetched,
 } from '../actionTypes/actionTypes';
 import { getAllCustomers, addCustomer } from '../../api/CustomersAPI';
 import { getAllProducts, addProduct } from '../../api/ProductsAPI';
+import { getAllQuotations, createQuotation, downloadQuotationAsDocx } from '../../api/QuotationAPI';
 import { getAllInvoices, createInvoice, downloadInvoiceAsDocx } from '../../api/InvoiceAPI';
 import { authenticateUser } from '../../api/AuthAPI';
 import getErrorMessage from '../../api/APIErrors';
@@ -53,6 +57,55 @@ function* addProductSaga(action) {
         yield put(addProductSuccess(data));
         yield put(showSnackbar({ message: 'Product Added Successfully' }));
         action.history.push('/dashboard/products/');
+    } catch (e) {
+        yield put(showSnackbar(getErrorMessage(e)));
+    }
+}
+
+function* getQuotationsSaga() {
+    try {
+        let { data } = yield call(getAllQuotations);
+        yield put(quotationsFetched(data));
+    } catch (e) {
+        yield put(showSnackbar(getErrorMessage(e)));
+    }
+}
+
+function* createQuotationSaga(action) {
+    try {
+        let { data } = yield call(createQuotation, action.payload);
+        yield put(createQuotationSuccess(data));
+        yield put(showSnackbar({ message: 'Quotation Added Successfully' }));
+        action.history.push('/dashboard/quotation/');
+    } catch (e) {
+        yield put(showSnackbar(getErrorMessage(e)));
+    }
+}
+
+function* downloadQuotationAsDocxSaga(action) {
+    try {
+        let { data } = yield call(downloadQuotationAsDocx, action.payload);
+        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        const fileName = 'Quotation-'.concat(action.payload.quotationID.concat('.docx'));
+        if (navigator.msSaveOrOpenBlob) {
+            navigator.msSaveOrOpenBlob(blob, fileName);
+            yield put(showSnackbar({ message: 'Quotation Downloaded Successfully' }));
+        }
+        else {
+            var link = document.createElement('a');
+            var URL = window.URL || window.webkitURL;
+            var downloadUrl = URL.createObjectURL(blob);
+            link.href = downloadUrl;
+            link.style = "display: none";
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(function () {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(downloadUrl);
+            }, 100);
+            yield put(showSnackbar({ message: 'Quotation Downloaded Successfully' }));
+        }
     } catch (e) {
         yield put(showSnackbar(getErrorMessage(e)));
     }
@@ -124,6 +177,7 @@ function* isLoggedInSaga(action) {
     }
     yield put(getCustomers());
     yield put(getProducts());
+    yield put(getQuotations());
     yield put(getInvoices());
 }
 
@@ -141,6 +195,18 @@ export function* watchGetProducts() {
 
 export function* watchAddProducts() {
     yield takeLatest('ADD_PRODUCT', addProductSaga);
+}
+
+export function* watchGetQuotations() {
+    yield takeLatest('GET_QUOTATIONS', getQuotationsSaga);
+}
+
+export function* watchCreateQuotation() {
+    yield takeLatest('CREATE_QUOTATION', createQuotationSaga);
+}
+
+export function* watchDownloadQuotationAsDocx() {
+    yield takeLatest('DOWNLOAD_QUOTATION_AS_DOCX', downloadQuotationAsDocxSaga);
 }
 
 export function* watchGetInvoices() {

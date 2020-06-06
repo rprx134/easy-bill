@@ -7,10 +7,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from '../../../components/UI/BootstrapUI/Buttons/Button';
+import { capitalizeFirstLetter } from '../../../components/POJOs/CapitalizeFirstLetter';
 import '../QuotationAndInvoice/BagDetails.css';
 
 const bagDetails = (props) => {
     let customerInfoToShow = '';
+    const title = props.parentOperation;
     if (_isEmpty(props.selectedCustomerID)) {
         customerInfoToShow = 'Please select a customer!';
     } else {
@@ -41,7 +43,7 @@ const bagDetails = (props) => {
     return (
         <Jumbotron>
             <Container>
-                <h1>Invoice Details</h1>
+                <h1>{capitalizeFirstLetter(title)} Details</h1>
                 <p>
                     <strong>Customer: </strong>{customerInfoToShow}
                 </p>
@@ -108,9 +110,9 @@ const bagDetails = (props) => {
                         block={true}
                         type={'button'}
                         id={'createInvoiceBtn'}
-                        btnOnClick={props.createInvoiceBtnClick}
+                        btnOnClick={title === 'invoice' ? props.createInvoiceBtnClick : props.createQuotationBtnClick}
                         disabled={false}
-                        btnTxt={'Create Invoice'}
+                        btnTxt={'Create '.concat(capitalizeFirstLetter(title))}
                     />
                 </Row>
             </Container>

@@ -38,6 +38,26 @@ export const dismissSnackbar = (payload) => {
     return { type: 'SNACKBAR_HIDE', payload };
 };
 
+export const getQuotations = () =>  {
+    return { type: 'GET_QUOTATIONS' };
+}
+
+export const quotationsFetched = (quotationData) => {
+    return { type: 'QUOTATIONS_FETCHED', payload: quotationData };
+}
+
+export const createQuotation = (quotationData, history) => {
+    return { type: 'CREATE_QUOTATION', payload: quotationData, history };
+}
+
+export const createQuotationSuccess = (quotationData) => {
+    return { type: 'CREATE_QUOTATION_SUCCESS', payload: quotationData };
+}
+
+export const downloadQuotationAsDocx = (quotationData) => {
+    return { type: 'DOWNLOAD_QUOTATION_AS_DOCX', payload: quotationData };
+}
+
 export const getInvoices = () =>  {
     return { type: 'GET_INVOICES' };
 }
