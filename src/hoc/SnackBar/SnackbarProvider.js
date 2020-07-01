@@ -18,7 +18,7 @@ class SnackbarProvider extends PureComponent {
 
   direction = {
     vertical: 'bottom',
-    horizontal: 'right'
+    horizontal: 'left'
   };
 
   getChildContext() {

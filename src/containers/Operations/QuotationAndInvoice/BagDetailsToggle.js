@@ -27,6 +27,8 @@ class BagDetailsToggle extends React.Component {
     }
 
     render() {
+        const quantity = this.props.quantityInBag ? this.props.quantityInBag : this.state.quantityValue;
+        const sellingPrice = this.props.sellingPriceInBag ? this.props.sellingPriceInBag : this.state.sellingprice;
         return (
             <React.Fragment>
                 <Col xs={6} lg={6}>
@@ -35,7 +37,7 @@ class BagDetailsToggle extends React.Component {
                         min={0}
                         max={100}
                         style={{ width: 75 }}
-                        value={this.state.quantityValue}
+                        value={quantity}
                         onChange={this.quantityOnChange}
                     />
                 </Col>
@@ -44,7 +46,7 @@ class BagDetailsToggle extends React.Component {
                         aria-label="Product Selling Price"
                         min={0}
                         style={{ width: 75 }}
-                        value={this.state.sellingprice}
+                        value={sellingPrice}
                         onChange={this.sellingPriceOnChange}
                     />
                 </Col>
