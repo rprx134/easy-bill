@@ -19,7 +19,7 @@ const sagaMiddleware = createSagaMiddleware();
 let middlewares = applyMiddleware(sagaMiddleware);
 
 /** Create redux store */
-const store = createStore(
+export const store = createStore(
     reducers,
     compose(middlewares,
         window.devToolsExtension ? window.devToolsExtension() : f => f),

@@ -76,7 +76,7 @@ class AutoSuggest extends Component {
   };
 
   onSuggestionSelected = (event, { suggestion }) => {
-    this.props.selectedCustomerID(suggestion._id);
+    this.props.onSelectionHandler(suggestion._id);
   }
 
   render() {

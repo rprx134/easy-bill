@@ -101,7 +101,6 @@ class CreateQuotation extends Component {
     }
 
     addToBagHandler = (productID, quantity, sellingPrice, name) => {
-        console.log(name);
         const isProductInBag = _find(this.state.quotation.products, (product) => product.id === productID);
         if (isProductInBag) {
             const updatedQuotation = {
@@ -177,7 +176,6 @@ class CreateQuotation extends Component {
                 issueDate: getCrrDate(),
                 expiryDate: getquotationExpiryDate(),
             }
-            console.log(payload);
             this.props.createQuotation(payload, this.props.history);
         }
     }
@@ -217,7 +215,7 @@ class CreateQuotation extends Component {
                             <AutoSuggest
                                 suggestions={customerSuggestions}
                                 placeHolder={'Search customer by name'}
-                                selectedCustomerID={this.selectedCustomerHandler} />
+                                onSelectionHandler={this.selectedCustomerHandler} />
                         </Col>
                     </Row>
                     {/* <Row>
