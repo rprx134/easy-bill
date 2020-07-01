@@ -19,6 +19,7 @@ import { createInvoice } from '../../../../redux/actionTypes/actionTypes';
 import { getCrrDate } from '../../../../components/POJOs/GetCurrentDate';
 import ChooseInvoiceByQuotation from '../../../../components/Operations/Invoices/ChooseInvoiceByQuotation';
 import { getQuotationById } from '../../../../selectors/quotationSelectors';
+import { roundOfPrice } from '../../../../components/POJOs/RoundOfPrice';
 
 import './CreateInvoice.css';
 
@@ -61,13 +62,8 @@ class CreateInvoice extends Component {
         return invoiceSubTotal;
     }
 
-    roundOfPrice = (value, decimals = 2) => {
-        // return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
-        return parseFloat(value).toFixed(decimals);
-    }
-
     addToBagHandler = (productID, quantity, sellingPrice, name) => {
-        const isProductInBag = _find(this.state.invoice.products, (product) => product.id === productID);
+        const isProductInBag = _find(this.state.invoice.products, (product) => product._id === productID);
         if (isProductInBag) {
             const updatedInvoice = {
                 ...this.state.invoice,
@@ -76,11 +72,11 @@ class CreateInvoice extends Component {
                 const updatedInvoice = {
                     ...this.state.invoice,
                 };
-                let updatedProducts = _remove(this.state.invoice.products, (product) => product.id === productID);
+                let updatedProducts = _remove(this.state.invoice.products, (product) => product._id === productID);
                 updatedInvoice.products = updatedProducts;
-                updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
-                updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-                updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
+                updatedInvoice.subTotal = roundOfPrice(this.getInvoiceSubTotal(), 2);
+                updatedInvoice.gst = roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
+                updatedInvoice.grandTotal = roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
                 this.setState({ invoice: updatedInvoice });
             } else {
                 let index = _findIndex(updatedInvoice.products, { _id: productID });
@@ -88,13 +84,13 @@ class CreateInvoice extends Component {
                     _id: productID,
                     quantity,
                     name,
-                    sellingPrice: this.roundOfPrice(sellingPrice, 2),
-                    totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
+                    sellingPrice: roundOfPrice(sellingPrice, 2),
+                    totalPrice: roundOfPrice((quantity * sellingPrice), 2),
                 });
             }
-            updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
-            updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
+            updatedInvoice.subTotal = roundOfPrice(this.getInvoiceSubTotal(), 2);
+            updatedInvoice.gst = roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
+            updatedInvoice.grandTotal = roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
             this.setState({ invoice: updatedInvoice });
         } else if (quantity !== 0) {
             const updatedInvoice = {
@@ -104,12 +100,12 @@ class CreateInvoice extends Component {
                 _id: productID,
                 quantity,
                 name,
-                sellingPrice: this.roundOfPrice(sellingPrice, 2),
-                totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
+                sellingPrice: roundOfPrice(sellingPrice, 2),
+                totalPrice: roundOfPrice((quantity * sellingPrice), 2),
             });
-            updatedInvoice.subTotal = this.roundOfPrice(this.getInvoiceSubTotal(), 2);
-            updatedInvoice.gst = this.roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = this.roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
+            updatedInvoice.subTotal = roundOfPrice(this.getInvoiceSubTotal(), 2);
+            updatedInvoice.gst = roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
+            updatedInvoice.grandTotal = roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
             this.setState({ invoice: updatedInvoice });
         }
     }
@@ -145,9 +141,9 @@ class CreateInvoice extends Component {
         }
     }
 
-    getQuantityInBag = (id) => _get(_find(this.state.invoice.products, {'id': id}), 'quantity', 0);
+    getQuantityInBag = (id) => _get(_find(this.state.invoice.products, {'_id': id}), 'quantity', 0);
 
-    getSellingPriceInBag = (id) => _get(_find(this.state.invoice.products, {'id': id}), 'sellingPrice', 0);
+    getSellingPriceInBag = (id) => _get(_find(this.state.invoice.products, {'_id': id}), 'sellingPrice', 0);
 
     selectedQuotationHandler = (id) => {
         this.setState({quotationID: id});
@@ -156,7 +152,6 @@ class CreateInvoice extends Component {
     }
 
     render() {
-        console.log(this.state.invoice);
         const { products } = this.props;
         const renderProducts = products.map(product => {
             const quantityInBag = this.getQuantityInBag(product._id);

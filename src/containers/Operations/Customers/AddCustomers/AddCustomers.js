@@ -34,9 +34,9 @@ class AddCustomer extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        let isFormValid = this.state.formValidity;
         let payload = {};
         let id;
+        let isFormValid = this.state.formValidity;
         getFormElements(this, "customerControls").forEach(formElement => {
             if (isFormValid) {
                 isFormValid = formElement.config.valid;

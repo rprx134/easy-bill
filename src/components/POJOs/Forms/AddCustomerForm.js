@@ -9,7 +9,7 @@ const getCustomerFormFields = () => {
             },
             value: '',
             validation: {
-                required: false,
+                required: true,
                 isEmail: false,
             },
             valid: false,
@@ -44,7 +44,7 @@ const getCustomerFormFields = () => {
                 required: false,
                 isEmail: true,
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         gstin: {
@@ -70,9 +70,9 @@ const getCustomerFormFields = () => {
             },
             value: '',
             validation: {
-                required: true,
+                required: false,
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         line1: {
@@ -84,9 +84,9 @@ const getCustomerFormFields = () => {
             },
             value: '',
             validation: {
-                required: true,
+                required: false,
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         line2: {
@@ -100,7 +100,7 @@ const getCustomerFormFields = () => {
             validation: {
                 required: false,
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         city: {
@@ -112,9 +112,9 @@ const getCustomerFormFields = () => {
             },
             value: '',
             validation: {
-                required: true,
+                required: false,
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         state: {
@@ -126,9 +126,9 @@ const getCustomerFormFields = () => {
             },
             value: '',
             validation: {
-                required: true,
+                required: false,
             },
-            valid: false,
+            valid: true,
             touched: false
         },
         country: {
@@ -140,7 +140,7 @@ const getCustomerFormFields = () => {
             },
             value: 'India',
             validation: {
-                required: true,
+                required: false,
             },
             valid: true,
             touched: false
@@ -154,9 +154,9 @@ const getCustomerFormFields = () => {
             },
             value: '',
             validation: {
-                required: true,
+                required: false,
             },
-            valid: false,
+            valid: true,
             touched: false
         },
     }
