@@ -24,7 +24,6 @@ class Products extends Component {
             return (
                 <Product key={product._id}
                     name={product.name}
-                    baseprice={product.baseprice}
                     sellingprice={product.sellingprice}
                 />
             );

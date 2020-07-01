@@ -8,7 +8,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from '../../../components/UI/BootstrapUI/Buttons/Button';
 import { capitalizeFirstLetter } from '../../../components/POJOs/CapitalizeFirstLetter';
+import { roundOfPrice } from '../../../components/POJOs/RoundOfPrice';
 import '../QuotationAndInvoice/BagDetails.css';
+
 
 const bagDetails = (props) => {
     let customerInfoToShow = '';
@@ -19,8 +21,12 @@ const bagDetails = (props) => {
         const customer = _find(props.customers, (customer) => { return customer._id === props.selectedCustomerID; });
         customerInfoToShow = customer.name + ', Mobile: ' + customer.mobile;
     }
+    const subTotal = roundOfPrice(props.subTotal);
+    const gst = roundOfPrice(props.gst);
+    const grandTotal = roundOfPrice(props.grandTotal);
     const renderSelectedProducts = props.selectedProducts.map(selectedProduct => {
-        const productName = _find(props.products, (product) => product._id === selectedProduct.id).name;
+        const totalPrice = roundOfPrice(selectedProduct.totalPrice);
+        const productName = _find(props.products, (product) => product._id === selectedProduct._id).name;
         return (
             <ListGroup.Item style={{
                 backgroundColor: '#D3D3D3',
@@ -34,7 +40,7 @@ const bagDetails = (props) => {
                     </Col>
                     <Col xs={6} lg={6}>
                         <div align="right">
-                            Rs. {selectedProduct.totalPrice}
+                            Rs. {totalPrice}
                         </div>
                     </Col>
                 </Row>
@@ -61,7 +67,7 @@ const bagDetails = (props) => {
                     </Col>
                     <Col xs={6} lg={6}>
                         <div align="right">
-                            Rs. {props.subTotal}
+                            Rs. {subTotal}
                         </div>
                     </Col>
                 </Row>
@@ -77,7 +83,7 @@ const bagDetails = (props) => {
                     </Col>
                     <Col xs={6} lg={6}>
                         <div align="right">
-                            Rs. {props.gst}
+                            Rs. {gst}
                         </div>
                     </Col>
                 </Row>
@@ -93,7 +99,7 @@ const bagDetails = (props) => {
                     </Col>
                     <Col xs={6} lg={6}>
                         <div align="right">
-                            <strong>Rs. {props.grandTotal}</strong>
+                            <strong>Rs. {grandTotal}</strong>
                         </div>
                     </Col>
                 </Row>

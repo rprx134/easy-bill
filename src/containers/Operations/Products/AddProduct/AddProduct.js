@@ -45,9 +45,6 @@ class AddProduct extends Component {
                     payload = { ...payload, "name": formElement.config.value };
                     id = formElement.config.value;
                     break;
-                case 'basePrice':
-                    payload = { ...payload, "basePrice": formElement.config.value };
-                    break;
                 case 'sellingPrice':
                     payload = { ...payload, "sellingPrice": formElement.config.value };
                     break;

@@ -16,21 +16,6 @@ const getProductFormFields = () => {
             touched: false,
             searchIdentifier: true,
         },
-        basePrice: {
-            inputType: 'textBox',
-            elementConfig: {
-                type: 'text',
-                placeholder: 'Product Base Price in Rupees',
-                id: "productBasePrice"
-            },
-            value: '',
-            validation: {
-                required: true,
-                isMoney: true
-            },
-            valid: false,
-            touched: false
-        },
         sellingPrice: {
             inputType: 'textBox',
             elementConfig: {

@@ -19,6 +19,7 @@ import Alert from '../../../../components/UI/Modal/Alert/Alert';
 import BagDetails from '../../QuotationAndInvoice/BagDetails';
 import { createQuotation } from '../../../../redux/actionTypes/actionTypes';
 import { getCrrDate, getquotationExpiryDate } from '../../../../components/POJOs/GetCurrentDate';
+import { roundOfPrice } from '../../../../components/POJOs/RoundOfPrice';
 
 import './CreateQuotation.css';
 
@@ -95,13 +96,8 @@ class CreateQuotation extends Component {
         return quotationSubTotal;
     }
 
-    roundOfPrice = (value, decimals=2) => {
-        // return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
-        return parseFloat(value).toFixed(decimals);
-    }
-
     addToBagHandler = (productID, quantity, sellingPrice, name) => {
-        const isProductInBag = _find(this.state.quotation.products, (product) => product.id === productID);
+        const isProductInBag = _find(this.state.quotation.products, (product) => product._id === productID);
         if (isProductInBag) {
             const updatedQuotation = {
                 ...this.state.quotation,
@@ -110,40 +106,40 @@ class CreateQuotation extends Component {
                 const updatedQuotation = {
                     ...this.state.quotation,
                 };
-                let updatedProducts = _remove(this.state.quotation.products, (product) => product.id === productID);
+                let updatedProducts = _remove(this.state.quotation.products, (product) => product._id === productID);
                 updatedQuotation.products = updatedProducts;
-                updatedQuotation.subTotal = this.roundOfPrice(this.getQuotationSubTotal(), 2);
-                updatedQuotation.gst = this.roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
-                updatedQuotation.grandTotal = this.roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
+                updatedQuotation.subTotal = roundOfPrice(this.getQuotationSubTotal(), 2);
+                updatedQuotation.gst = roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
+                updatedQuotation.grandTotal = roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
                 this.setState({ quotation: updatedQuotation });
             } else {
-                let index = _findIndex(updatedQuotation.products, { id: productID });
+                let index = _findIndex(updatedQuotation.products, { _id: productID });
                 updatedQuotation.products.splice(index, 1, {
-                    id: productID,
+                    _id: productID,
                     quantity,
                     name,
-                    sellingPrice: this.roundOfPrice(sellingPrice, 2),
-                    totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
+                    sellingPrice: roundOfPrice(sellingPrice, 2),
+                    totalPrice: roundOfPrice((quantity * sellingPrice), 2),
                 });
             }
-            updatedQuotation.subTotal = this.roundOfPrice(this.getQuotationSubTotal(), 2);
-            updatedQuotation.gst = this.roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
-            updatedQuotation.grandTotal = this.roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
+            updatedQuotation.subTotal = roundOfPrice(this.getQuotationSubTotal(), 2);
+            updatedQuotation.gst = roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
+            updatedQuotation.grandTotal = roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
             this.setState({ quotation: updatedQuotation });
         } else if (quantity !== 0) {
             const updatedQuotation = {
                 ...this.state.quotation,
             };
             updatedQuotation.products.push({
-                id: productID,
+                _id: productID,
                 quantity,
                 name,
-                sellingPrice: this.roundOfPrice(sellingPrice, 2),
-                totalPrice: this.roundOfPrice((quantity * sellingPrice), 2),
+                sellingPrice: roundOfPrice(sellingPrice, 2),
+                totalPrice: roundOfPrice((quantity * sellingPrice), 2),
             });
-            updatedQuotation.subTotal = this.roundOfPrice(this.getQuotationSubTotal(), 2);
-            updatedQuotation.gst = this.roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
-            updatedQuotation.grandTotal = this.roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
+            updatedQuotation.subTotal = roundOfPrice(this.getQuotationSubTotal(), 2);
+            updatedQuotation.gst = roundOfPrice((updatedQuotation.subTotal * (18 / 100)), 2);
+            updatedQuotation.grandTotal = roundOfPrice((parseFloat(updatedQuotation.subTotal) + parseFloat(updatedQuotation.gst)), 2);
             this.setState({ quotation: updatedQuotation });
         }
     }

@@ -6,8 +6,8 @@ import Col from 'react-bootstrap/Col';
 
 class BagDetailsToggle extends React.Component {
     state = {
-        quantityValue: 0,
-        sellingprice: this.props.sellingprice,
+        quantityValue: this.props.quantityInBag ? this.props.quantityInBag : 0,
+        sellingprice: this.props.sellingPriceInBag ? this.props.sellingPriceInBag : this.props.sellingprice,
         name: this.props.name
     };
     quantityOnChange = (value) => {
@@ -27,8 +27,6 @@ class BagDetailsToggle extends React.Component {
     }
 
     render() {
-        const quantity = this.props.quantityInBag ? this.props.quantityInBag : this.state.quantityValue;
-        const sellingPrice = this.props.sellingPriceInBag ? this.props.sellingPriceInBag : this.state.sellingprice;
         return (
             <React.Fragment>
                 <Col xs={6} lg={6}>
@@ -37,7 +35,7 @@ class BagDetailsToggle extends React.Component {
                         min={0}
                         max={100}
                         style={{ width: 75 }}
-                        value={quantity}
+                        value={this.state.quantityValue}
                         onChange={this.quantityOnChange}
                     />
                 </Col>
@@ -46,7 +44,7 @@ class BagDetailsToggle extends React.Component {
                         aria-label="Product Selling Price"
                         min={0}
                         style={{ width: 75 }}
-                        value={sellingPrice}
+                        value={this.state.sellingprice}
                         onChange={this.sellingPriceOnChange}
                     />
                 </Col>
