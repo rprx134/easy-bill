@@ -15,14 +15,14 @@ export const getMonthInWords = (date) => {
     return month[date.getMonth()];
 }
 
-export const getDay = (date) => date.getDay();
+export const getDate = (date) => date.getDate();
 
 export const getYear = (date) => date.getFullYear();
 
 export const getCrrDate = () => {
     const today = new Date();
     const dateArr = [];
-    dateArr.push(getDay(today));
+    dateArr.push(getDate(today));
     dateArr.push(getMonthInWords(today));
     dateArr.push(getYear(today));
     return dateArr.join(' ');
@@ -33,7 +33,7 @@ export const getquotationExpiryDate = () => {
     var numberOfDaysToAdd = 180;
     date.setDate(date.getDate() + numberOfDaysToAdd);
     const dateArr = [];
-    dateArr.push(getDay(date));
+    dateArr.push(getDate(date));
     dateArr.push(getMonthInWords(date));
     dateArr.push(getYear(date));
     return dateArr.join(' ');
