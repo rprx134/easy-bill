@@ -148,7 +148,19 @@ class CreateInvoice extends Component {
     selectedQuotationHandler = (id) => {
         this.setState({quotationID: id});
         const quotation = getQuotationById(id);
-        this.setState({invoice: quotation});
+        const quotationToInvoice = {
+            ...quotation,
+        };
+        const UpdatedInvoice = {
+            ...this.state.invoice,
+            customerID: quotationToInvoice.customerID,
+            quotationID: quotationToInvoice._id,
+            products: quotationToInvoice.products,
+            subTotal: quotationToInvoice.subTotal,
+            gst: quotationToInvoice.gst,
+            grandTotal: quotationToInvoice.grandTotal,
+        };
+        this.setState({invoice: UpdatedInvoice});
     }
 
     render() {
