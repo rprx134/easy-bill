@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import _find from 'lodash/find';
 import Quotation from '../../../components/Operations/Quotations/Quotation';
+import Loader from '../../../components/Operations/Loader/Loader';
 import {
     showSnackbar,
     downloadQuotationAsDocx,
 } from '../../../redux/actionTypes/actionTypes';
-import { bindActionCreators } from 'redux';
-import _find from 'lodash/find';
 
 class Quotations extends Component {
 
@@ -22,11 +23,11 @@ class Quotations extends Component {
     }
 
     downloadAsDocHandler = (quotationID) => {
-        this.props.downloadQuotationAsDocx({quotationID});
+        this.props.downloadQuotationAsDocx({ quotationID });
     }
 
     render() {
-        const { quotations, customers } = this.props;
+        const { quotations, customers, loaderEnabled } = this.props;
         const renderItem = quotations.map(quotation => {
             const selectedCustomer = _find(customers, (customer) => { return customer._id === quotation.customerID; });
             return (
@@ -40,7 +41,7 @@ class Quotations extends Component {
         });
         return (
             <Fragment>
-                {renderItem}
+                {loaderEnabled ? <Loader /> : renderItem}
             </Fragment >
         );
     }
@@ -49,6 +50,7 @@ class Quotations extends Component {
 const mapStateToProps = state => ({
     quotations: state.quotations,
     customers: state.customers,
+    loaderEnabled: state.loaderEnabled,
 });
 
 const mapDispatchToProps = (dispatch) => {
