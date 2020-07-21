@@ -20,6 +20,7 @@ import BagDetails from '../../QuotationAndInvoice/BagDetails';
 import { createQuotation } from '../../../../redux/actionTypes/actionTypes';
 import { getCrrDate, getquotationExpiryDate } from '../../../../components/POJOs/GetCurrentDate';
 import { roundOfPrice } from '../../../../components/POJOs/RoundOfPrice';
+import Loader from '../../../../components/Operations/Loader/Loader';
 
 import './CreateQuotation.css';
 
@@ -177,7 +178,7 @@ class CreateQuotation extends Component {
     }
 
     render() {
-        const { products } = this.props;
+        const { products, loaderEnabled } = this.props;
         // const selectCustomerView = formGenerator(this, "customerControls");
         const renderProducts = products.map(product => {
             return (
@@ -191,78 +192,79 @@ class CreateQuotation extends Component {
         });
         const customerSuggestions = getCustomerSuggestions(this.props.customers);
         return (
-            <React.Fragment>
-                <Col lg={7} xs={12}>
-                    <Row>
-                        <Col lg={8} xs={6}>
-                            <h3>Customer</h3>
-                        </Col>
-                        <Col lg={4} xs={6}>
-                            <div align="right">
-                                <ToggleSwitch
-                                    toggleSwitch={this.toggleHandler}
-                                    toggleLabel={'Add New'}
-                                />
-                            </div>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col lg={12} xs={12}>
-                            <AutoSuggest
-                                suggestions={customerSuggestions}
-                                placeHolder={'Search customer by name'}
-                                onSelectionHandler={this.selectedCustomerHandler} />
-                        </Col>
-                    </Row>
-                    {/* <Row>
+            loaderEnabled ? <Loader /> :
+                <React.Fragment>
+                    <Col lg={7} xs={12}>
+                        <Row>
+                            <Col lg={8} xs={6}>
+                                <h3>Customer</h3>
+                            </Col>
+                            <Col lg={4} xs={6}>
+                                <div align="right">
+                                    <ToggleSwitch
+                                        toggleSwitch={this.toggleHandler}
+                                        toggleLabel={'Add New'}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col lg={12} xs={12}>
+                                <AutoSuggest
+                                    suggestions={customerSuggestions}
+                                    placeHolder={'Search customer by name'}
+                                    onSelectionHandler={this.selectedCustomerHandler} />
+                            </Col>
+                        </Row>
+                        {/* <Row>
                         <Col xl="12" md="12" sm="12">
                             {selectCustomerView}
                             <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addCustomerQuotationPage" disabled={this.state.disableInputs} />
                         </Col>
                     </Row> */}
-                    <Row style={{ paddingLeft: 5, marginTop: 5, marginBottom: 5 }}>
-                        <Col xs={4} lg={6}>
-                            <h5>Product Name</h5>
-                        </Col>
-                        <Col xs={8} lg={6} style={{ display: 'flex' }}>
-                            <Col xs={6} lg={6}>
-                                <h5>Quantity</h5>
+                        <Row style={{ paddingLeft: 5, marginTop: 5, marginBottom: 5 }}>
+                            <Col xs={4} lg={6}>
+                                <h5>Product Name</h5>
                             </Col>
-                            <Col xs={6} lg={6}>
-                                <h5>Selling Price</h5>
+                            <Col xs={8} lg={6} style={{ display: 'flex' }}>
+                                <Col xs={6} lg={6}>
+                                    <h5>Quantity</h5>
+                                </Col>
+                                <Col xs={6} lg={6}>
+                                    <h5>Selling Price</h5>
+                                </Col>
                             </Col>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col lg={12} xs={12}>
-                            <ListGroup style={{ marginBottom: 5 }}>
-                                {renderProducts}
-                            </ListGroup>
-                        </Col>
-                    </Row>
-                </Col>
-                <Col lg={5} xs={12}>
-                    <BagDetails
-                        customers={this.props.customers}
-                        products={this.props.products}
-                        selectedCustomerID={this.state.quotation.customerID}
-                        selectedProducts={this.state.quotation.products}
-                        subTotal={this.state.quotation.subTotal}
-                        gst={this.state.quotation.gst}
-                        grandTotal={this.state.quotation.grandTotal}
-                        createQuotationBtnClick={this.createQuotationHandler}
-                        parentOperation={'quotation'}
-                    />
-                </Col>
-                {
-                    this.state.alert.showAlert ?
-                        <Alert
-                            show={this.state.alert.showAlert}
-                            resetFormValidity={this.resetAlert}
-                            alertMsg={this.state.alert.alertMessage}
-                        /> : null
-                }
-            </React.Fragment >
+                        </Row>
+                        <Row>
+                            <Col lg={12} xs={12}>
+                                <ListGroup style={{ marginBottom: 5 }}>
+                                    {renderProducts}
+                                </ListGroup>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col lg={5} xs={12}>
+                        <BagDetails
+                            customers={this.props.customers}
+                            products={this.props.products}
+                            selectedCustomerID={this.state.quotation.customerID}
+                            selectedProducts={this.state.quotation.products}
+                            subTotal={this.state.quotation.subTotal}
+                            gst={this.state.quotation.gst}
+                            grandTotal={this.state.quotation.grandTotal}
+                            createQuotationBtnClick={this.createQuotationHandler}
+                            parentOperation={'quotation'}
+                        />
+                    </Col>
+                    {
+                        this.state.alert.showAlert ?
+                            <Alert
+                                show={this.state.alert.showAlert}
+                                resetFormValidity={this.resetAlert}
+                                alertMsg={this.state.alert.alertMessage}
+                            /> : null
+                    }
+                </React.Fragment >
         );
     }
 }
@@ -270,6 +272,7 @@ class CreateQuotation extends Component {
 const mapStateToProps = state => ({
     customers: state.customers,
     products: state.products,
+    loaderEnabled: state.loaderEnabled,
 });
 
 const mapDispatchToProps = (dispatch) => {

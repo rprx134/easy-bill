@@ -20,6 +20,7 @@ import { getCrrDate } from '../../../../components/POJOs/GetCurrentDate';
 import ChooseInvoiceByQuotation from '../../../../components/Operations/Invoices/ChooseInvoiceByQuotation';
 import { getQuotationById } from '../../../../selectors/quotationSelectors';
 import { roundOfPrice } from '../../../../components/POJOs/RoundOfPrice';
+import Loader from '../../../../components/Operations/Loader/Loader';
 
 import './CreateInvoice.css';
 
@@ -141,12 +142,12 @@ class CreateInvoice extends Component {
         }
     }
 
-    getQuantityInBag = (id) => _get(_find(this.state.invoice.products, {'_id': id}), 'quantity', 0);
+    getQuantityInBag = (id) => _get(_find(this.state.invoice.products, { '_id': id }), 'quantity', 0);
 
-    getSellingPriceInBag = (id) => _get(_find(this.state.invoice.products, {'_id': id}), 'sellingPrice', 0);
+    getSellingPriceInBag = (id) => _get(_find(this.state.invoice.products, { '_id': id }), 'sellingPrice', 0);
 
     selectedQuotationHandler = (id) => {
-        this.setState({quotationID: id});
+        this.setState({ quotationID: id });
         const quotation = getQuotationById(id);
         const quotationToInvoice = {
             ...quotation,
@@ -160,11 +161,11 @@ class CreateInvoice extends Component {
             gst: quotationToInvoice.gst,
             grandTotal: quotationToInvoice.grandTotal,
         };
-        this.setState({invoice: UpdatedInvoice});
+        this.setState({ invoice: UpdatedInvoice });
     }
 
     render() {
-        const { products } = this.props;
+        const { products, loaderEnabled } = this.props;
         const renderProducts = products.map(product => {
             const quantityInBag = this.getQuantityInBag(product._id);
             const sellingPriceInBag = this.getSellingPriceInBag(product._id);
@@ -180,7 +181,7 @@ class CreateInvoice extends Component {
             );
         });
         return (
-            <React.Fragment>
+            loaderEnabled ? <Loader /> : <React.Fragment>
                 {this.state.quotationID ?
                     <>
                         <Col lg={7} xs={12}>
@@ -246,6 +247,7 @@ class CreateInvoice extends Component {
 const mapStateToProps = state => ({
     customers: state.customers,
     products: state.products,
+    loaderEnabled: state.loaderEnabled,
 });
 
 const mapDispatchToProps = (dispatch) => {
