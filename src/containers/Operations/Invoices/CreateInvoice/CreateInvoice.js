@@ -21,6 +21,7 @@ import ChooseInvoiceByQuotation from '../../../../components/Operations/Invoices
 import { getQuotationById } from '../../../../selectors/quotationSelectors';
 import { roundOfPrice } from '../../../../components/POJOs/RoundOfPrice';
 import Loader from '../../../../components/Operations/Loader/Loader';
+import ShippingCharges from '../../../../components/Operations/Invoices/ShippingCharges';
 
 import './CreateInvoice.css';
 
@@ -37,6 +38,7 @@ class CreateInvoice extends Component {
             gst: 0.00,
             grandTotal: 0.00,
             date: null,
+            shippingCharges: 0.00
         },
         alert: {
             showAlert: false,
@@ -63,6 +65,10 @@ class CreateInvoice extends Component {
         return invoiceSubTotal;
     }
 
+    setGrandTotal = (updatedInvoice) => {
+        return roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst) + parseFloat(updatedInvoice.shippingCharges)), 2);
+    }
+
     addToBagHandler = (productID, quantity, sellingPrice, name) => {
         const isProductInBag = _find(this.state.invoice.products, (product) => product._id === productID);
         if (isProductInBag) {
@@ -77,7 +83,7 @@ class CreateInvoice extends Component {
                 updatedInvoice.products = updatedProducts;
                 updatedInvoice.subTotal = roundOfPrice(this.getInvoiceSubTotal(), 2);
                 updatedInvoice.gst = roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-                updatedInvoice.grandTotal = roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
+                updatedInvoice.grandTotal = this.setGrandTotal(updatedInvoice);
                 this.setState({ invoice: updatedInvoice });
             } else {
                 let index = _findIndex(updatedInvoice.products, { _id: productID });
@@ -91,7 +97,7 @@ class CreateInvoice extends Component {
             }
             updatedInvoice.subTotal = roundOfPrice(this.getInvoiceSubTotal(), 2);
             updatedInvoice.gst = roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
+            updatedInvoice.grandTotal = this.setGrandTotal(updatedInvoice);
             this.setState({ invoice: updatedInvoice });
         } else if (quantity !== 0) {
             const updatedInvoice = {
@@ -106,7 +112,7 @@ class CreateInvoice extends Component {
             });
             updatedInvoice.subTotal = roundOfPrice(this.getInvoiceSubTotal(), 2);
             updatedInvoice.gst = roundOfPrice((updatedInvoice.subTotal * (18 / 100)), 2);
-            updatedInvoice.grandTotal = roundOfPrice((parseFloat(updatedInvoice.subTotal) + parseFloat(updatedInvoice.gst)), 2);
+            updatedInvoice.grandTotal = this.setGrandTotal(updatedInvoice);
             this.setState({ invoice: updatedInvoice });
         }
     }
@@ -164,6 +170,15 @@ class CreateInvoice extends Component {
         this.setState({ invoice: UpdatedInvoice });
     }
 
+    setShippingAndForwardingCharges = (value) => {
+        const updatedInvoice = {
+            ...this.state.invoice,
+            shippingCharges: value,
+        };
+        updatedInvoice.grandTotal = this.setGrandTotal(updatedInvoice);
+        this.setState({invoice: updatedInvoice});
+    }
+
     render() {
         const { products, loaderEnabled } = this.props;
         const renderProducts = products.map(product => {
@@ -205,6 +220,8 @@ class CreateInvoice extends Component {
                                     </ListGroup>
                                 </Col>
                             </Row>
+                            <ShippingCharges
+                                changed={this.setShippingAndForwardingCharges} />
                         </Col>
                         <Col lg={5} xs={12}>
                             <BagDetails
@@ -214,6 +231,7 @@ class CreateInvoice extends Component {
                                 selectedProducts={this.state.invoice.products}
                                 subTotal={this.state.invoice.subTotal}
                                 gst={this.state.invoice.gst}
+                                shippingCharges={this.state.invoice.shippingCharges}
                                 grandTotal={this.state.invoice.grandTotal}
                                 createInvoiceBtnClick={this.createInvoiceHandler}
                                 parentOperation={'invoice'}

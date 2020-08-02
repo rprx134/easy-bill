@@ -23,6 +23,7 @@ const bagDetails = (props) => {
     }
     const subTotal = roundOfPrice(props.subTotal);
     const gst = roundOfPrice(props.gst);
+    const shippingCharges = roundOfPrice(props.shippingCharges);
     const grandTotal = roundOfPrice(props.grandTotal);
     const renderSelectedProducts = props.selectedProducts.map(selectedProduct => {
         const totalPrice = roundOfPrice(selectedProduct.totalPrice);
@@ -84,6 +85,22 @@ const bagDetails = (props) => {
                     <Col xs={6} lg={6}>
                         <div align="right">
                             Rs. {gst}
+                        </div>
+                    </Col>
+                </Row>
+                <hr style={{ margin: 0 }} />
+                <Row style={{
+                    paddingTop: 13,
+                    paddingRight: 21,
+                    paddingBottom: 0,
+                    paddingLeft: 21
+                }}>
+                    <Col xs={6} lg={6}>
+                        <p>Shipping Charges</p>
+                    </Col>
+                    <Col xs={6} lg={6}>
+                        <div align="right">
+                            Rs. {shippingCharges}
                         </div>
                     </Col>
                 </Row>
