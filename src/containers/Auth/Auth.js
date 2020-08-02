@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { InputValidation } from '../../components/POJOs/Forms/FormGenerator/FormValidation/InputValidation';
-import Anchor from '../../components/UI/BootstrapUI/Anchor/Anchor';
 import { formGenerator, getFormElements } from '../../components/POJOs/Forms/FormGenerator/FormGenerator';
 import Alert from '../../components/UI/Modal/Alert/Alert';
 import getAuthFormFields from '../../components/POJOs/Forms/LoginForm';
@@ -62,13 +61,13 @@ class Auth extends Component {
     }
 
     render() {
-        const anchorStyles = {
+        /* const anchorStyles = {
             padding: 0,
             marginTop: 8,
             marginBottom: 8,
             textAlign: 'left',
             display: 'block',
-        };
+        }; */
         return (
             <React.Fragment>
                 <Container>
@@ -80,7 +79,7 @@ class Auth extends Component {
                                     <h4>Please sign in.</h4>
                                     {formGenerator(this, "authControls")}
                                     <Button btnType="submit" btnVarient="primary" size="lg" block={true} btnTxt="LOGIN" btnID="login" />
-                                    <Anchor
+                                    {/* <Anchor
                                         url="#"
                                         ancTxt="Forgot your email or password?"
                                         aID="resetCred"
@@ -91,7 +90,7 @@ class Auth extends Component {
                                         ancTxt="Register Now"
                                         aID="signup"
                                         style={anchorStyles}
-                                    />
+                                    /> */}
                                     {this.state.formValidity ? null : <Alert show={!this.state.formValidity} resetFormValidity={this.resetFormValidity} alertMsg="Please fill the required fields with valid content" />}
                                 </form>}
                         </Col>
