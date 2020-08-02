@@ -8,6 +8,7 @@ import Alert from '../../../../components/UI/Modal/Alert/Alert';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import getProductFormFields from '../../../../components/POJOs/Forms/AddProductForm';
+import Loader from '../../../../components/Operations/Loader/Loader';
 import '../../../../components/POJOs/Forms/Forms.css';
 import './AddProduct.css';
 
@@ -74,22 +75,24 @@ class AddProduct extends Component {
         const formToRender = formGenerator(this, "productControls");
         return (
             <React.Fragment>
-                <div className="AddProduct">
-                    <form onSubmit={this.submitHandler}>
-                        <h4>Add Product</h4>
-                        {formToRender}
-                        <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
-                        <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" btnOnClick={this.cancelHandler} />
-                        {this.state.formValidity ? null : <Alert show={!this.state.formValidity} resetFormValidity={this.resetFormValidity} alertMsg="Please fill the required fields with valid content" />}
-                    </form>
-                </div>
+                {this.props.loaderEnabled
+                    ? <Loader /> :
+                    <div className="AddProduct">
+                        <form onSubmit={this.submitHandler}>
+                            <h4>Add Product</h4>
+                            {formToRender}
+                            <Button btnType="submit" btnVarient="primary" size="sm" block={false} btnTxt="ADD" btnID="addProduct" />
+                            <Button btnType="button" btnVarient="secondary" size="sm" block={false} btnTxt="CANCEL" btnID="cancel" btnOnClick={this.cancelHandler} />
+                            {this.state.formValidity ? null : <Alert show={!this.state.formValidity} resetFormValidity={this.resetFormValidity} alertMsg="Please fill the required fields with valid content" />}
+                        </form>
+                    </div>}
             </React.Fragment>
         );
     }
 }
 
 const mapStateToProps = state => ({
-
+    loaderEnabled: state.loaderEnabled,
 });
 
 const mapDispatchToProps = (dispatch) => {

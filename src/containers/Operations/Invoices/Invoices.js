@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import Invoice from '../../../components/Operations/Invoices/Invoice';
+import { bindActionCreators } from 'redux';
+import _find from 'lodash/find';
 import {
     showSnackbar,
     downloadInvoiceAsDocx,
 } from '../../../redux/actionTypes/actionTypes';
-import { bindActionCreators } from 'redux';
-import _find from 'lodash/find';
+import Invoice from '../../../components/Operations/Invoices/Invoice';
+import Loader from '../../../components/Operations/Loader/Loader';
 
 class Invoices extends Component {
 
@@ -26,7 +27,7 @@ class Invoices extends Component {
     }
 
     render() {
-        const { invoices, customers } = this.props;
+        const { invoices, customers, loaderEnabled } = this.props;
         const renderItem = invoices.map(invoice => {
             const selectedCustomer = _find(customers, (customer) => { return customer._id === invoice.customerID; });
             return (
@@ -40,7 +41,7 @@ class Invoices extends Component {
         });
         return (
             <Fragment>
-                {renderItem}
+                {loaderEnabled ? <Loader /> : renderItem}
             </Fragment >
         );
     }
@@ -49,6 +50,7 @@ class Invoices extends Component {
 const mapStateToProps = state => ({
     invoices: state.invoices,
     customers: state.customers,
+    loaderEnabled: state.loaderEnabled,
 });
 
 const mapDispatchToProps = (dispatch) => {
